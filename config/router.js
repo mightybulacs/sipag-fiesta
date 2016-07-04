@@ -10,7 +10,8 @@ module.exports = (router) => {
 
   router.del = router.delete;
 
-  router.get ('/test', __.test.get_test);
+  router.get ('/test',          __.test.get_test);
+  router.get ('/comodities',    __.commodity.get_test);
 
   router.all('*', (req, res) => {
     res.status(404)
