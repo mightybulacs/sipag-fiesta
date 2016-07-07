@@ -9,7 +9,7 @@ exports.get_commodity = (req, res, next) => {
   function start () {
     mysql.use('slave')
       .query(
-        'SELECT name FROM COMMODITY',
+        'SELECT * FROM COMMODITY',
         send_response
       )
       .end();
@@ -33,7 +33,7 @@ exports.get_commodity_category = (req, res, next) => {
   function start () {
     mysql.use('slave')
       .query(
-        'SELECT name FROM COMMODITY WHERE category=?',
+        'SELECT * FROM COMMODITY WHERE category=?',
         [req.params.category],
         send_response
       )
