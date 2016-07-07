@@ -13,6 +13,12 @@ module.exports = (router) => {
   router.get ('/test',          __.test.get_test);
   router.get ('/comodities',    __.commodity.get_test);
 
+  //CATEGORY
+  router.get ('/categories',    __.category.get_category);
+  router.post ('/categories', 	__.category.post_category);
+  router.put ('/categories/:name', 	__.category.put_category);
+  router.delete ('/categories/:name', 	__.category.delete_category);
+
   router.all('*', (req, res) => {
     res.status(404)
       .send({message: 'Nothing to do here.'});
