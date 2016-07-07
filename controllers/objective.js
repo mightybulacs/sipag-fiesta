@@ -9,7 +9,7 @@ exports.get_objective = (req, res, next) => {
   function start () {
     mysql.use('slave')
       .query(
-        'SELECT objective FROM OBJECTIVE where technology_id=?',
+        'SELECT * FROM OBJECTIVE where technology_id=?',
         [req.params.id],
         send_response
       )

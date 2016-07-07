@@ -9,7 +9,7 @@ exports.get_benefit = (req, res, next) => {
   function start () {
     mysql.use('slave')
       .query(
-        'SELECT benefit FROM BENEFIT where technology_id=?',
+        'SELECT * FROM BENEFIT where technology_id=?',
         [req.params.id],
         send_response
       )
