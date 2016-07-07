@@ -9,7 +9,7 @@ exports.get_category = (req, res, next) => {
   function start () {
     mysql.use('slave')
       .query(
-        'SELECT name FROM CATEGORY',
+        'SELECT * FROM CATEGORY',
         send_response
       )
       .end();
