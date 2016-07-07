@@ -31,6 +31,19 @@ module.exports = (router) => {
   router.put ('/objectives/:id', 						__.objective.put_objective);
   router.delete ('/objectives/:id', 					__.objective.delete_objective);
 
+  //BENEFICIARY
+  router.get ('/technologies/:id/beneficiaries',    __.beneficiary.get_beneficiary);
+  router.post ('/technologies/:id/beneficiaries',   __.beneficiary.post_beneficiary);
+  router.put ('/beneficiaries/:id',  __.beneficiary.put_beneficiary);
+  router.delete ('/beneficiaries/:id',   __.beneficiary.delete_beneficiary);
+
+  //PARTNER
+  router.get ('/technologies/:id/partners',    __.partner.get_partner);
+  router.post ('/technologies/:id/partners',   __.partner.post_partner);
+  router.put ('/partners/:id',  __.partner.put_partner);
+  router.delete ('/partners/:id',   __.partner.delete_partner);
+
+
   router.all('*', (req, res) => {
     res.status(404)
       .send({message: 'Nothing to do here.'});
