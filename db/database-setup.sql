@@ -64,9 +64,10 @@ CREATE TABLE IF NOT EXISTS TECHNOLOGY (
 */
 
 CREATE TABLE IF NOT EXISTS COMMODITY (
+  commodity_id int(4) NOT NULL AUTO_INCREMENT,
   name varchar(64) NOT NULL,
   category varchar(64) NOT NULL,
-  PRIMARY KEY (name),
+  PRIMARY KEY (commodity_id),
   FOREIGN KEY (category) REFERENCES CATEGORY(name) ON DELETE CASCADE
 );
 
@@ -78,8 +79,10 @@ CREATE TABLE IF NOT EXISTS COMMODITY (
 */
 
 CREATE TABLE IF NOT EXISTS OBJECTIVE (
+  objective_id int(4) NOT NULL AUTO_INCREMENT,
   technology_id int(4) NOT NULL,
   objective text,
+  PRIMARY KEY (objective_id),
   FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE
 );
 
@@ -91,8 +94,10 @@ CREATE TABLE IF NOT EXISTS OBJECTIVE (
 */
 
 CREATE TABLE IF NOT EXISTS BENEFIT (
+  benefit_id int(4) NOT NULL AUTO_INCREMENT,
   technology_id int(4) NOT NULL,
   benefit text NOT NULL,
+  PRIMARY KEY (benefit_id),
   FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE
 );
 
@@ -104,8 +109,10 @@ CREATE TABLE IF NOT EXISTS BENEFIT (
 */
 
 CREATE TABLE IF NOT EXISTS BENEFICIARY (
+  beneficiary_id int(4) NOT NULL AUTO_INCREMENT,
   technology_id int(4) NOT NULL,
   beneficiary text NOT NULL,
+  PRIMARY KEY (beneficiary_id),
   FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE
 );
 
@@ -117,8 +124,10 @@ CREATE TABLE IF NOT EXISTS BENEFICIARY (
 */
 
 CREATE TABLE IF NOT EXISTS LOCATION (
+  location_id int(4) NOT NULL AUTO_INCREMENT,
   technology_id int(4) NOT NULL,
   location varchar(64) NOT NULL,
+  PRIMARY KEY (location_id),
   FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE
 );
 
@@ -130,8 +139,10 @@ CREATE TABLE IF NOT EXISTS LOCATION (
 */
 
 CREATE TABLE IF NOT EXISTS PARTNER (
+  partner_id int(4) NOT NULL AUTO_INCREMENT,
   technology_id int(4) NOT NULL,
   partner varchar(128) NOT NULL,
+  PRIMARY KEY (partner_id),
   FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE
 );
 
