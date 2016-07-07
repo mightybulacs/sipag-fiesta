@@ -43,141 +43,164 @@ INSERT INTO COMMODITY ( name, category )
     );
 
 /*CROPS TECHNOLOGY*/
-INSERT INTO TECHNOLOGY ( title, description, objective_intro ) 
+INSERT INTO TECHNOLOGY ( title, description, objective_intro, commodity_id ) 
   VALUES 
     /*ABACA*/
     (
       'Diagnostic kit for abaca virus',
       'The diagnostic kit developed for the detection of abaca bunchy top virus (ABTV) is based on the principle of dot-ELISA (Enzyme Link Immunosorbent Assay). The primary component of the diagnostic kit is the antiserum generated to specifically detect the presence of the virus. The generated antibody can detect infection in the lowest concentration. The activity and sensitivity of the generated antisera are comparable to that of the commercial kit and its effectivity in identifying ABTV-free and ABTV-positive plants has been confirmed.',
-      NULL 
+      NULL ,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Abaca")
     ),
     (
       'Adding higher value to abaca',
       'Abaca (Musa textilis Nee) is a plant indigenous to the Philippines. Its fiber is the strongest among natural fibers. The country supplies about 85% of the world’s demand, mainly as pulp, raw fibers, ropes, yarns, and fibercrafts. Ironically, the Philippines imports back abaca in the form of specialty paper products (security/ currency base papers, tea bags, filters).\n The research and development program on abaca for specialty papers, textile and other high value products will help push for the optimum use of our abaca resources to benefit the local pulp and paper industry, and the abaca sector in general. The program has components on characterizing abaca fiber (both commercial and new varieties) and processing/value adding with the ultimate goal of encouraging local production of high-value abaca-based products, such as textile, security/currency base paper, tea bags, packaging and printing/writing papers, and nanocrystalline cellulose (NCC), and abaca-based toxic metal ion adsorbent.',
-      NULL
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Abaca")
     ),
     (
       'High-yielding and virus-resistant abaca hybrid',
       'Abaca (Musa textilis Nee.) or Manila hemp is indigenous to the Philippines and considered as one of the country’s most important crops. It is grown by Filipino farmers for its fibers. \n Abaca fibers serve as raw materials for cordage, textile, and various hand-woven crafts. But in recent years, the importance of abaca has doubled and use of abaca fibers has expanded. Pulps from abaca fibers are now good materials for the manufacture of specialty papers such as currency notes, filter papers, stencil papers, and tea bags. \n Developed by the Institute of Plant Breeding (IPB) of the University of the Philippines Los Baños (UPLB) using marker-aided breeding technique, the promising abaca hybrid resistant to bunchy top virus (BTV) has a potential fiber yield of 1.56 mt/ha. It also has a fiber recovery of 1.31%, 275 cm fiber length, and 65.8 kg/g-m tensile strength.',
-      NULL
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Abaca")
     ),
 
     /*BANANA*/
     (
       'Combatting Fusarium wilt through resistant varieties and biological control',
       'The ‘Cavendish’ banana constitutes 50% of the country’s banana production and provides employment to almost 330,000 Filipinos. The incidence of Fusarium wilt caused by Fusarium oxysporum f. sp. cubense (Foc) Tropical Race 4 (TR4) in 2012 threatened the million-dollar export industry of the Philippines. \n Introduced Cavendish somaclones from Taiwan were tested on Philippine soil and two showed promising performance in terms of productivity and market acceptability– the giant Cavendish tissue culture variant (GCTCV) 218 and 219. GCTCV 218 produces fingers and yield that are almost similar to Grand Nain (GN) at an average of 25 kilograms (kg)/bunch (note: GN averages 30 kg/bunch). GCTCV 219, on the other hand has relatively lower yield at an average of 18 kg/bunch but is sweeter and can be marketed as highland banana.\n Application of commercially-available microbial agents such as Trichoderma harzianum enhances action against Foc TR4 in GCTCV 218, a moderately resistant somaclone while GCTCV 219, which is very resistant to Fusarium wilt no longer requires microbial agents even in infested soil.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Banana")
     ),
     (
       'Use of developed lakatan to address banana bunchy top',
       'Banana bunchy top virus (BBTV) is the most destructive virus disease of banana in the country as its severe incidence could wipe out a plantation singlehandedly. The vector, a winged aphid, Pentalonia nigronervosa, makes the disease difficult to contain and manage. Because it has no known cure, built-in resistance in lakatan is identified as a good management strategy to effectively control its spread. \nBBTV-resistant lakatan mutant lines were developed through irradiation and is currently showing intermediate resistance to the disease. Disease spread was observed to be slower in lakatan mutant lines compared to ordinary lakatan. The performance of the lines are being tested in Quirino, Laguna, Batangas, and Davao City and shows varying performance across location: 270–405 days to harvest; 6–9 hands per bunch; and 12–26 kg per bunch.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Banana")
     ),
 
     /*COCONUT*/
     (
       'Promising varieties of coconut for VCO and cocosap sugar production',
       'Five hybrids (PCA 15-8, Syn Var, PCA 15-9, PCA 15-3, PCA 15-2); 5 tall varieties (BAYT, SNRT, TAGT, BAOT, LAGT); and 1 dwarf variety with 5–7 liters (L)/palm oil yield, high Vitamin E, and lauric content were recommended for virgin coconut oil (VCO) production. Moreover, four hybrids (PCA 15-2, PCA 15-1, PCA 15-3, and PB 121) and two dwarf varieties (CATD and MRD) were recommended for coconut sugar production with high toddy yield (6,000–8,600 L/hectare [ha] per month) and sap sugar (700–1,000 kg/ha per month). These varieties shall be part of the mass production activities for the replanting program in Regions 4-A, 5, 6, 7, 8, 9, 11, 12, and ARMM.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Coconut") 
     ),
     (
       'Improved mass propagation technique for coconut',
       'Coconut tissue culture through somatic embryogenesis is an alternative technique for mass production of coconut. With this technique, the plumule-derived planting materials are produced from embryonic callus-forming somatic embryos and later on regenerate into plantlets over a period of almost three years. One plumule from a mature coconut is expected to produce 1,000 plantlets following the enhanced PCA-coconut somatic embryogenesis technology (PCA-CSet).',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Coconut") 
     ),
     (
       'Biological control of coconut scale insect (CSI)',
       'Utilization of naturally-occuring insect predators and parasitoids is one of the Integrated Pest Management strategies for CSI infestation. Insect predators such as Telsimia sp. and Chilochorus sp. parasitize CSI by 65–92%. \n As a biological control procedure, about 80,000 adult predators have been mass reared and released monthly in CSI-infested coconut farms and in nearby areas to manage the CSI population. Mass rearing of additional biocon agent such as insect parasitoid (Comperiella sp.), is also being done for inoculative release in new areas with CSI invasion.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Coconut") 
     ),
     
     /*COFFEE*/
     (
       'Quality planting materials for better coffee',
       'Propagating coffee plants via somatic embryogenesis (SE), an asexual method of plant propagation, has been identified as a means to increase its production. Somatic embryos that will develop into mature plants are produced from tissues of the leaves and stems of coffee varieties with superior characteristics without seed formation/fertilization. This results in mass production of true-to-type plants (plants that are genetically similar with each other). \nMaintenance of genetic integrity leads to the preservation of the favored characteristics of a coffee variety even after many generations of reproduction. From a single leaf explant used, as much as 150 plantlets can be produced. This is significantly higher from an embryo culture which has a 1:1 plantlet and embryo ratio.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Coffee") 
     ),
     
     /*JACKFRUIT*/
     (
       'Metarhizium anisopliae as biological control for jackfruit fruit borer',
       'Metarhizium anisopliae is a fungus that grows naturally in soils throughout the world. It is reported to infect over 200 insect pest species and is currently being used as a biological insecticide to control a number of pests. The sweet potato weevil isolate of Metarhizium was found effective in controlling jackfruit fruit borer, with an infection rate of 84.75. Immature stages of jackfruit fruit borer are most vulnerable because they are still on the surface of the fruit which are directly hit by the Metarhizium suspension during application. Jackfruit fruit borer could infest in all fruit stages except the ripe stage, thereby causing considerable loss in jackfruit production.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Jackfruit") 
     ),
     (
       'Optimized vacuum-fried and dehydrated jackfruit products',
       'Vacuum-fried jackfruit is a nutritious product from jackfruit pulp processed at low temperature (below 1000C) thereby maintaining the fruit’s color, flavor, sweetness and nutritional qualities. It is less oily, hence not prone to rancidity.\n Meanwhile, dehydrated jackfruit is a chewy product with golden yellow color and a mix of sweet and sour taste. Sodium metabisulfite (0.1%) is being used in the product as anti-microbial and anti-browning agent. Jackfruit fruit maturity is not a critical factor in processing dehydrated jackfruit.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Jackfruit") 
     ),
     
     /*MANGO*/
     (
       'Dipstick kit for rapid detection of true-to-type ‘carabao’ mango variety',
       'The technology is a simple and rapid diagnostic kit (dipstick kit) that could determine true-to-type ‘carabao’ mango variety planting materials using ‘carabao’ mango-specific DNA markers. \nThe dipstick kit specifically identifies Philippine ‘carabao’ mango and differentiates it with other mango varieties to ensure dispersal of quality planting materials for sustained production of fresh fruits and quality raw materials for processing for the local and export market.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Mango") 
     ),
     
     /*PEANUT*/
     (
       'Increasing productivity through development of new and improved peanut varieties: NSIC Pn 17, NSIC Pn 18',
       'The use of improved varieties can increase crop productivity by 30%. The Asha (NSIC Pn 15) and Namnama 2 (NSIC Pn 14) varieties developed in 2002–2010 yield 2.2–3.5 t/ha as compared with the 0.60 t/ha produced by the native variety. These are big-seeded and are suitable for confectionery, often called 3-in-1 because they produce three seed classes. Continuous varietal improvement and trials are being done in various peanut-growing regions to evaluate the seeds’ performance and location specificity. The results serve as bases in selecting varieties for seed multiplication to enhance the peanut value chain.\n Through the PCAARRD Peanut R&D program, and in partnership with the DA, two new peanut varieties were approved by the National Seed Industry Council from 2013 to 2015—the NSIC Pn 2013 17 (ICGV 95390) also known as \"G.D. Lasam-Pride\" and NSIC 2013 Pn 18 (ICGV 01273) or Namnama 3. The NSIC Pn 19 (ICGV 96176) or Namnama 4 was recently nominated for NSIC registration and approval. These improved confectionery varieties are ideal for processing and were born from International Crops Research Institute for the Semi-Arid Tropics (ICRISAT)-bred varieties adapted to semi-arid conditions and localized to Cagayan Valley conditions, and eventually in major peanut growing areas of the country. \nThe development of improved varieties coupled with improved storage technologies and practices is a helpful input for the improvement of peanut seed production management to be adopted under the formal and informal seed system for the attainment of sustainable supply of quality seeds.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Peanut") 
     ),
     (
       'Improving productivity through improved soil nutrient and pest management practices',
       'The package of technology (POT) on peanut includes the adoption of recommended soil nutrient and pest management practices such as seed inoculation using Rhizobium, gypsum fertilization and the use of biological control agents (BCAs). \nPeanut can fix 45 kg of nitrogen (N)/ha through the root nodule bacteria using Rhizobium (Bradyrhizobium spp.). It is responsible in converting atmospheric N in a form available to plants. Inoculating the seeds prior to planting will boost root development and growth and this practice cuts down on production cost by reducing the use of inorganic fertilizers. \nApplication of gypsum or calcium sulfate, on the other hand, provides calcium for direct absorption by the plant. Calcium helps develop pods and reduces \"pops\" or unfilled pods, as well as seed rot caused by fungi. \nOn pest management, recent studies showed that Metarhizium anisopliae, a microbial control agent, can control leaf hopper and leaf folder in peanut. Metarhizium is a green muscardine fungus, which is safe to humans and animals and easy to mass produce. It is easy to apply and is compatible with other pest management options. Trichogramma spp., also a BCA, is efficient against cutworm, leaf folder, and leaf hopper. Trichogramma are dark-colored tiny wasps and the most widely used BCA in the world. A single Trichogramma, while multiplying itself, can destroy over 100 eggs of the pest. It offers a lower and more effective plant protection option than insecticides.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Peanut") 
     ),
     (
       'Improvement of peanut seed storage system through super grain bag',
       'Large -seeded confectionery peanut varieties like Namnama 1 and 2 and Asha were found to have quick seed deterioration and poor storability due to high oil content, hence, there is a need to improve the post-harvest handling specifically on drying and seed storage practices. The super grain bag (SGB) makes the principle of hermetic storage available to farmers and processors at low cost. Super grain bags reduce the flow of both oxygen and water between the stored seed and the outside atmosphere. The stability of seed moisture inside the bag prevents wetting and drying, and this stability reduces kernel breakage in peanut thus recovery is high during shelling. \nBased on recent studies on peanut seed packaging and storage, the use of SGB and jute sacks with transparent lining are the most appropriate and cost effective for seed storage. The packaging materials can maintain good seed germination of 80-83% until the 12th month of storage under cold and ambient condition. \n The development of SGB is helpful in the improvement of peanut seed production management. It can be adopted under the formal and informal seed system leading to the attainment of sustainable supply of quality seeds for enhanced peanut productivity.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Peanut") 
     ),
     (
       'Enhancing peanut productivity through boron fertilization',
       'Boron is one of the seven micronutrients required for normal growth and development of plants. It promotes proper cell division, cell elongation, cell wall strength, flowering, pollination, seed set, and sugar translocation. \nBased on recent studies, the combined application of Boron (Solubor Borax and Fertibor) significantly increased peanut yield up to 627–693 kg/ha for BPI Pn 9 variety, 709–1,097 kg/ha for NSIC Pn 15 (Asha) variety, and 1,641–1,907 kg/ha for NSIC Pn 14 (Namnama 2) variety. \n This yield increment can be translated to an increase in income ranging from P5,000/ha to P33,000/ha depending on the prevailing farm gate price of the peanut at harvest. Economic analysis however, showed that it is more economical to use Solubor Borax in single application at the rate of 500 g/ha giving a marginal benefit cost ratio (MBCR) of 5.89%, 9.17%, and 7.74% for BPI Pn 9, NSIC Pn 14, and NSIC Pn 15 variety, respectively. Boron application also reduced the number of unfilled pods by 15–44%.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Peanut") 
     ),
     (
       'Improved packaging and participatory marketing of peanut for regional OTOP',
       'Product development and improvement of packaging of regional peanut food products for the One-Town-One-Product (OTOP) approach enhances product differentiation between regions thereby boost peanut production and the establishment of small-scale enterprises in the countryside. \n This peanut R&D project component being implemented by state universities and colleges (SUCs) and with assistance of the DOST-ITDI and the DOST-Food and Nutrition Research Institute has developed and improved the packaging of five regional OTOP peanut products in Regions 1, 2, 3, 7, and CAR, with brand names \"CAR-ing Nuts\" for CAR (BSU for peanut butter), \"Ilocos Nuts\" for Region 1 (MMSU for sand-cooked peanut), \"Valley Nuts for Region 2 (QSU for peanut butterscotch), \"NUTurally Tarlac\" for Region 3 (TCA for peanut ice cream), and \"Tarsy Nuts\" for Region 7 (Bohol Island State University (BISU) for Peañato). \n Improved packaging of champion OTOP peanut products coupled with the adoption of appropriate storage and processing techniques can extend the shelf life and control aflatoxin contamination. It is considered as an effective tool in establishing local and export market linkages, and ensures the production, marketing and consumption of safe and quality peanut food products.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Peanut") 
     ),
     
     /*RICE*/
     (
       'Boosting rice productivity using carrageenan plant food supplement from seaweeds',
       'Carrageenan is an indigestible polysaccharide (carbohydrates) extracted from edible seaweeds. Polysaccharide, when subjected to modified irradiation technology, can be an effective plant growth supplement. At a very small dose, this supplement makes an effective organic fertilizer. It has been found to increase rice yield by 15–30%.\n The application of three and six bags of chemical fertilizer per ha, combined with 20 ml/L of carrageenan yields higher grain weight (450 g and 455 g/10 hills, respectively) than the farmers’ practice of applying nine bags of chemical fertilizer/ha.\n Carrageenan enhances the crop vigor of rice. Productive tillers and panicle length (length of inflorescence) are significantly higher in Carrageenan-treated plants. Productive tillers are the rice stems that bear panicles (rice inflorescence) with fertilized grains, while longer rice panicle is associated with producing more rice grains.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Rice") 
     ),
     (
       'Improving rice milling in the countryside',
       'The developed technology is a new type of rice mill using \"impeller\" instead of \"rubber-roll\" for its hulling mechanism. The design is suitable for village level of operation. \n The machine has a milling capacity of 230 kg/hr. Head rice recovery for milled rice is 63.9% and 91% for brown rice. Milling recovery is 63–65%.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Rice") 
     ),
     (
       'Increasing hand tractor utilization in the countryside',
       'The concept of developing rice transplanting and harvesting implements that can be readily mounted to and dismounted from the hand tractor unit is a relatively new concept. The availability of such implements will significantly increase further the utilization of hand tractor in farm areas. Moreover, it can potentially reduce the cost of farm level mechanization. \n Specifications \n   1. Working efficiency: 500 m2/hr \n 2. Working width: 0.8 meter (m) \n 3. Loss ratio: <= 3.5% \n 4. Impurity ratio: 6% \n 5. Power requirement: 9 horsepower (hp) diesel engine \n 6. Capacity: 1.6 ha/day \n 7. Planting distance: 30 centimeter (cm) x 20 cm \n   8. Field efficiency: 80% \n 9. Planting depth: 3–5 cm \n 10. Power requirement: 7 hp diesel engine',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Rice") 
     ),
     
     /*SWEET POTATO*/
     (
       'Sweetpotato clean planting materials (SP-CPM)',
       'The production of sweetpotato clean planting materials (SP-CPM) particularly of the Super Bureau variety was initiated to address problems on the incidence of the ‘camote kulot’. This disease has been attacking sweetpotato in Central Luzon since 1991 and has been causing yield losses of more than 50% due to the use of infected planting materials \n Piloting the utilization of SP-CPM proved to significantly reduce the incidence of the virus disease complex resulting in significant increase in yield and consequently improved the income of the sweetpotato farmers. Dissemination of the said technology is through participatory approach following the Farmers’ Field School (FFS) on Sweetpotato Integrated Crop Management (ICM) that is focused on SP-CPM production.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Sweet Potato") 
     ),
     
     /*VEGETABLES*/
     (
       'Grafting technology for year-round production of vegetables',
       'Grafting is a natural or deliberate fusion of plant parts to establish vascular continuity and functions as a single plant. The term scion (cyon) refers to the shoot piece or bud cut from a donor plant that will grow into the upper portion of the grafted plant. The terms stock, under stock, or rootstock all refer to the plant that receives and fuses with the scion and functions as the root system of the grafted plant. \n Grafting of vegetable seedlings is a unique horticultural technology developed to overcome soil-borne diseases and pests and to  \n add extra vigor to the plants under various environmental stress conditions. It is a feasible technology in terms of yield advantage and disease prevention as compared to non-grafted plants during off-season production. \n The project was able to select open-pollinated lines for rootstock which are resistant to Ralstonia solanacearum and Fusarium, and commercially available varieties of cucumber, bitter gourd, sweet pepper, and eggplant for scion. Tube grafting and hole insertion is best employed for solanaceous and cucurbits, respectively.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Vegetables") 
     ),
     (
       'GRAS coatings to enhance shelflife of vegetables',
       'Coatings derived from phytochemical extracts can be generally regarded as safe to enhance the shelflife of highly perishable vegetables. \n The project was able to extract effective generally regarded as safe (GRAS) coatings from ‘hagimit’ (Ficus minahassae), cat’s whiskers (Orthosiphon aristatus (Blanco)), turmeric (Curcuma longa L.), and ‘balimbing’ (Averrhoa carambola L.) using distilled water, acetic acid, or ethanol as solvent. Application of extracts extended the shelflife and sustained the free radical scavenging activity (FRSA) of coated vegetables.',
-      NULL 
+      NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Vegetables") 
     );
 
 /*CROP BENEFIT*/

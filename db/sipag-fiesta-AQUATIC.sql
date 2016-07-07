@@ -22,7 +22,7 @@ INSERT INTO COMMODITY ( name, category )
       (SELECT name FROM CATEGORY WHERE name="Aquatic")
     ),
     (
-      'Aquafeed',
+      'Aquafeeds',
       (SELECT name FROM CATEGORY WHERE name="Aquatic")
     ),
     (
@@ -34,11 +34,11 @@ INSERT INTO COMMODITY ( name, category )
       (SELECT name FROM CATEGORY WHERE name="Aquatic")
     ),
     (
-      'Coral',
+      'Corals',
       (SELECT name FROM CATEGORY WHERE name="Aquatic")
     ),
     (
-      'Seaweed',
+      'Seaweeds',
       (SELECT name FROM CATEGORY WHERE name="Aquatic")
     ),
     (
@@ -46,93 +46,104 @@ INSERT INTO COMMODITY ( name, category )
       (SELECT name FROM CATEGORY WHERE name="Aquatic")
     );
 /*AQUATIC TECHNOLOGY*/
-INSERT INTO TECHNOLOGY ( title, description, objective_intro) 
+INSERT INTO TECHNOLOGY ( title, description, objective_intro, commodity_id) 
   VALUES 
       /*Milkfish*/
       (
         'DNA probes: Detecting pathogens on the dot',
         'DNA Probe Kits contain highly specific probes for the detection of bacterial pathogens in milkfish such as Vibrio anguillarum, Photobacterium damselae, Nocardia seriolae, Vibrio parahaemolyticus, and other pathogenic bacteria such as Klebsiella pneumonia and Staphylococcus saprophyticus. Highly specific probes are essential components for pathogen detection using quantitative real-time polymerase chain reaction (qPCR) technology. 52The qPCR technology offers greater sensitivity, rapidity, specificity, and ability for quantitative detection of pathogens. Using the DNA probe kits, the amplification of gene and detection of pathogen are seen in real-time. It does not require post-PCR steps such as gel-based analysis as in conventional end-point PCR, which is time-consuming, laborious, and unsafe. DNA probe kits are used in qPCR assays to detect the presence of pathogens in diseased fish or in water samples. The rapid detection of pathogenic bacteria from samples obtained in hatcheries and fish farms allows implementation of immediate remedial or preventive measures of the disease and formulation of better strategies for disease management in fish farming. ',
-        NULL
+        NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Milkfish")
       ),
       (
         'Automatic fry counter: Accurate laser fry counting for milkfish',
         'Milkfish is an important food fish comprising 8% of the total animal protein intake of Filipinos. Traditionally cultured in brackish water ponds, rearing of milkfish has expanded in lakes and more recently, in the marine environment. Aside from grow-out culture, selling of milkfish fry has also been a profitable aspect of the overall milkfish production. Counting using scoop net or small cup, however, is laborious and inaccurate. Faced with this problem, researchers from University of the Philippines Visayas (UPV) have developed a prototype \“automatic fry counter\” as a solution. Designs for the automated fry counter have been based on initial observations of fry swimming behavior through video documentation. Components of the fry counter, such as the holding chamber and counting channel, have been designed to minimize stress during the counting process and reduce the time it takes to count the fry. The counting mechanism utilizes a simple set-up composed of a light source (laser), receptor (phototransistor), and a small processor (Arduino-UNO chipset) to carry out the actual counting process. The simple design has kept estimated costs for the fry counter under PhP 5,000. Latest trials of the counting mechanism have shown 95% accuracy with six pieces fry per second counting rate.',
-        NULL
+        NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Milkfish")
       ),
         /*Shrimp*/
       (
         'Genome-based lateral flow strip biosensor kit: Quick detection, quick response against shrimp diseases',
-        'One of the keys to reducing the risk of diseases in shrimp is prevention and early detection. A rapid method that involves
-        the use of genome-based lateral flow strip biosensor has been developed as a diagnostic platform for white spot syndrome
-        virus and other shrimp pathogens. The test strips are field-ready, with an extraction and mobile device kit for first level screening of pathogens on site. Test strips may also be coupled with PCR amplification of DNA extracts for faster and low level detection. The test strips may be multiplexed for simultaneous detection of more than one pathogen. The use of mobile strip reader and an accompanying application (app) instantaneously allows the test results of the diagnostic strips to be fed into an on-line pathogen information resource and biosurveillance system. The mobile strip reader will link the data captured by the app to a cloud server, which in turn is linked to a biosurveillance data center at the Southeast Asian Fisheries Development Center (SEAFDEC). The lateral flow strip biosensor has four major parts. The first is a sample pad where liquid shrimp samples will be dropped. A conjugated pad contains gold nanoparticles conjugated with DNA sequences specific to the target pathogen. A nitrocellulose membrane contains the test line and control line. The absorption pad wicks the liquid sample to the end of the strip through capillary action.  This screening test is cost-competitive and when used in the field will allow for more regular and wider sampling for early detection of shrimp diseases.',
-        NULL
+        'One of the keys to reducing the risk of diseases in shrimp is prevention and early detection. A rapid method that involves the use of genome-based lateral flow strip biosensor has been developed as a diagnostic platform for white spot syndrome virus and other shrimp pathogens. The test strips are field-ready, with an extraction and mobile device kit for first level screening of pathogens on site. Test strips may also be coupled with PCR amplification of DNA extracts for faster and low level detection. The test strips may be multiplexed for simultaneous detection of more than one pathogen. The use of mobile strip reader and an accompanying application (app) instantaneously allows the test results of the diagnostic strips to be fed into an on-line pathogen information resource and biosurveillance system. The mobile strip reader will link the data captured by the app to a cloud server, which in turn is linked to a biosurveillance data center at the Southeast Asian Fisheries Development Center (SEAFDEC). The lateral flow strip biosensor has four major parts. The first is a sample pad where liquid shrimp samples will be dropped. A conjugated pad contains gold nanoparticles conjugated with DNA sequences specific to the target pathogen. A nitrocellulose membrane contains the test line and control line. The absorption pad wicks the liquid sample to the end of the strip through capillary action.  This screening test is cost-competitive and when used in the field will allow for more regular and wider sampling for early detection of shrimp diseases.',
+        NULL,
+        (SELECT commodity_id FROM COMMODITY WHERE name="Shrimp")
       ),
       (
         'LAMP: New simple tool for detecting virus in shrimps',
         'Loop-mediated isothermal amplification (LAMP) is a new molecular technique available, which can equal the PCR in specificity and
         offers higher sensitivity and rapid detection under isothermal conditions. Sensitivity of the reaction is enhanced by the use of four to six specially designed primers to detect white spot syndrome virus (WSSV). LAMP is ten times more sensitive for the detection of WSSV than conventional PCR. The use of four to six primers, instead of the usual two primers in PCR, also speeds up the reaction thereby reducing detection time. Results can therefore be obtained within one hour.  It does not require complicated and expensive equipment like a thermocycler. Reaction can be performed within one hour at a constant temperature (isothermal condition) ranging from 600 to 650 o C using a laboratory heatblock or waterbath. Because of its convenience, simplicity, and speed of detection, LAMP can therefore be used for on-site detection of WSSV in shrimp. Moreover, the practicality of LAMP assay makes it an effective tool for routine diagnosis for early detection of WSSV or any pathogen so proper health management procedures can be implemented to prevent mortality and avert economic losses.',
-        NULL
+        NULL,
+      (SELECT commodity_id FROM COMMODITY WHERE name="Shrimp")
       ),
       /*Mussel*/
       (
         'Pinoy longline: An innovative and sustainable way of growing mussels',
         'The Pinoy longline is a modified and cheaper version of the longline culture system used by New Zealand for producing high-quality mussel. The method is suitable for deeper waters and may be used to replace the stake method which causes sedimentation in coastal areas. The Pinoy longline culture system is composed of a 50-m main line made of 20-mm polypropylene rope. Attached in the main line are black plastic containers (40 cm x 35 cm x 19 cm) used as floaters which are discarded materials used for transporting oil and soy sauce. On both ends of the line, two plastic containers (91 cm x 37 cm) covered with polyethylene rope are used. To maintain the longline, anchors (approximately 152 cm x 127 cm x 102 cm) are placed on both sides. For stocking, mussel socks made of 2-m long and 10-mm thick polyethylene rope with cylindrical cement weighing 1 kg at the bottom are used. Mussel spats (2–3 cm) are placed inside the mussel sock at 200 pieces/m of sock. Mussel socks are tied to the longline at 50 cm interval.',
-        NULL
+        NULL,
+      (SELECT commodity_id FROM COMMODITY WHERE name="Mussel")
       ),  
     /*Mud Crab*/
     (
       'Soft opportunities for mud crab exports',
       'Soft-shell crabs are not distinct or special crab species, but are mud crabs or \'alimango\' (Scylla spp.) that have molted or shed their hard outer shells in preparation for growth. The hard shell must be shed in order for the crabs to grow. A soft, pliable crab emerges and expands its new shell. The shell of the crab starts to harden within hours. Scylla spp. juveniles (crablets) are obtained from hatcheries and reared in net cages until 3–4 cm size and grown further in ponds for 1.5–2.0 months until they attain 60–100 g body weight. At this size, crabs are placed individually in perforated plastic boxes on polyvinyl chloride (PVC) floating platforms set in brackish water ponds. The crabs are fed with mollusks or low value fish every 2 days. Molting is monitored every 4 hours. Newly molted crabs are kept in aerated freshwater to prevent hardening of shell. After one hour, the soft-shelled crabs are sorted and packed in plastic food containers for freezing.',
-      NULL
+      NULL,
+      (SELECT commodity_id FROM COMMODITY WHERE name="Mud Crab")
     ),
     (
       'Marine annelid as broodstock diet improves larval performance of mangrove crabs',
       'Breeding and culture techniques were developed for the culture of marine annelid (Marphysa mossambica) (63.2% crude protein and 0.8% crude fat) to supply the nutritional requirements of mud crab broodstock. Zoeae from broodstock fed with 20% pathogen-free annelid in formulated diet contained higher levels of total lipids and highly unsaturated fatty acid (HUFA), which can improve the larval performance. Feeding the zoeae with formulated diets reduced the use of natural food in the hatchery. In the nursery phase, improved survival of 70% in Phase 1 and 70–90% in Phase 2 were achieved. Bait-size polychaetes were used as feed (live or dry meal added in formulation) for crab broodstock. Natural food live Marphysa produced higher number (p<0.05) of zoea than the natural food without live Marphysa. Formulated diet containing 20% Marphysa produced higher number (p<0.05) of zoea than 10% Marphysa. Natural food live Marphysa + formulated diet 20% M produced higher number (p<0.05) of zoea than those without live Marphysa.',
-      NULL
+      NULL,
+      (SELECT commodity_id FROM COMMODITY WHERE name="Mud Crab")
     ),
     /*Tilapia*/
     (
       'GIS application for risk assessment in aquaculture',
       'Geographic information system (GIS) is a spatial decision support system or a system for input, storage, analysis, output, and display of geographic data or geographically-referenced information. GIS technology integrates spatial and other related information within a single computer system and allows access to attribute information by geographic location. A comprehensive geo-referenced database of tilapia ponds in Pampanga was developed. Data were used to determine the  suitability of fishponds in 21 municipalities for aquaculture based on: a) selected farm practices; b) fish kill and disease occurrences; c) results on soil quality; and d) results on water quality. Digital mapping and modelling was performed using the ArcGIS software with Environmental Systems Research Institute (ESRI) base maps and downloaded satellite images as references. The Analytic Hierarchy Process, a decision support tool was used to determine the overall suitability of aquaculture in Pampanga.',
-      NULL
+      NULL,
+      (SELECT commodity_id FROM COMMODITY WHERE name="Tilapia")
     ),
     /*Aquafeeds*/
     (
       'Microalgae: Potential feed for aquaculture species',
       'Microalgae are microscopic floating aquatic organisms that contain one cell and no roots, stems, or leaves. These algae have
       different shapes and colors and are very small, usually one quarter of a millimeter. The color of the microalgae cell depends on their pigments, which can either appear in blue-green, yellow, brown, or orange. These small aquatic plants are usually found in marine and freshwater environments, which are considered as one of the most important water organisms due to its utilization in various fields. The species serve as natural food for milkfish, shrimp, tilapia, and other finfishes and crustaceans at different stages. It is also a potential feed ingredient for culture of different aquaculture species. Microalgae production plays a very important role in the field of aquaculture. The four commonly used microalgae species in aquaculture include Tetraselmis sp., Nannochloropsis sp., Chaetoceros calcitrans, and Chlorella vulgaris. These species are currently utilized for mass production of algal pastes, the concentrated liquid microalgae cells used as feed for larval fish, shrimp, and other aquaculture species. The commercial algal paste costs about US $150/L.',
-      NULL
+      NULL,
+      (SELECT commodity_id FROM COMMODITY WHERE name="Aquafeeds")
     ),
     /*Sea Cucumber*/
     ( 
       'Harnessing S&T for a sustainable and competitive sea cucumber industry',
       'Sea cucumbers are high value marine invertebrates that used to abound in the country’s coastal waters. There are about 200 sea cucumber species in the country, which include 40 species that are of high value. The Philippines was a top producer of dried sea cucumbers (also known as beche-de-mer or trepang) in the 1980s. Due to unregulated harvesting and trade, total annual production is now less than 900 t. This pulled down the country to being the third sea cucumber producer. Moreover, the bulk of Philippine sea cucumber products is undersized lower-value species, poorly processed, and lowly priced.',
-      'A national program on sea cucumber was developed to restore the fishery and bring back a viable economic activity. The program aims to:'
+      'A national program on sea cucumber was developed to restore the fishery and bring back a viable economic activity. The program aims to:',
+      (SELECT commodity_id FROM COMMODITY WHERE name="Sea Cucumber")
     ),
     /*Oyster*/
     (
       'Bigger, juicier oyster, safe for human consumption',
       'Oyster farming is an important source of livelihood in many coastal communities. Production has been erratic due to unstable supply of quality seedstocks and poor oyster quality because most farms are located in shallow, polluted coastal areas. Hence, most of our oysters are consumed locally.',
-      'The Oyster R&D Program aims to increase production and improve
-      the quality of oyster (Crassostrea iredalei) in the Philippines by:'
+      'The Oyster R&D Program aims to increase production and improve the quality of oyster (Crassostrea iredalei) in the Philippines by:',
+      (SELECT commodity_id FROM COMMODITY WHERE name="Oyster")
     ),
     /*Corals*/
     (
       'Managing coral reefs for present and future generations',
       'The Philippine coral reefs significantly contribute to both global marine biodiversity and local economy. But these are massively threatened by natural and anthropogenic stressors and more recently, are faced with rising threats from climate change and continued coastal and upland development reflecting an increasingly complex environmental situation. Despite continued deterioration, corals’ specific responses to threats and ability to recover have not been fully documented and studied.',
-      'The national program on coral aims to:'
+      'The national program on coral aims to:',
+      (SELECT commodity_id FROM COMMODITY WHERE name="Corals")
     ),
     /*Seaweeds*/
     (
       'Revitalizing the seaweed industry',
       'Seaweeds are economically important as source of carrageenan,  an algal colloid that has various food and industrial applications. Seaweeds ranked as the country’s 2 nd major fishery export in 2013 contributing 18% share to the total export earnings. USA, China, and Belgium are among the major markets for Philippine seaweed products. Seaweed production comprised 65.66% of the total aquaculture production in 2013. Until 2008 when it was overtaken by Indonesia, the Philippines was the world’s No. 1 producer of raw materials for carrageenan. The decline in farm production is due to decreasing quality of seedstocks; unavailability of seedstocks for farming due to outbreak of diseases such as ‘ice-ice’ and presence of epiphytes; and decreasing carrying capacity of farms.',
-      'The Seaweed R&D program aims to:'
+      'The Seaweed R&D program aims to:',
+      (SELECT commodity_id FROM COMMODITY WHERE name="Seaweeds")
     ),
     /*Benham Rise*/
     (
       'Benham Rise: The Philippines’ new territory off Aurora',
       'Benham Rise, a 13-million hectare undersea region east of Luzon, is the Philippines’ new territory. Most of the Rise is about 2,000– 5,000 m deep but a seamount on the southern part rises to 50 m below the surface and is called the Benham Bank. The Benham Rise region is an extension of the Philippines’ continental shelf and is believed to be rich in living and non-living resources such as minerals and gas. An all-Filipino marine scientific research cruise was conducted to assess the benthic habitats and water column biological productivity in the vicinity of the Benham Bank and investigate the interaction between the ocean currents and topography. The cruise provided the first research effort of documenting deep-water biodiversity in the Philippines.',
-      NULL
+      NULL,
+      (SELECT commodity_id FROM COMMODITY WHERE name="Benham Rise")
     );
 
 /*AQUATIC OBJECTIVE*/

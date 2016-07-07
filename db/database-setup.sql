@@ -33,7 +33,20 @@ CREATE TABLE IF NOT EXISTS CATEGORY (
   PRIMARY KEY (name)
 );
 
+/*
+  COMMODITY
+    name
+    category
+    technologies (ref:TECHNOLOGY)
+*/
 
+CREATE TABLE IF NOT EXISTS COMMODITY (
+  commodity_id int(4) NOT NULL AUTO_INCREMENT,
+  name varchar(64) NOT NULL,
+  category varchar(64) NOT NULL,
+  PRIMARY KEY (commodity_id),
+  FOREIGN KEY (category) REFERENCES CATEGORY(name) ON DELETE CASCADE
+);
 
 /*
   TECHNOLOGY
@@ -53,23 +66,12 @@ CREATE TABLE IF NOT EXISTS TECHNOLOGY (
   title varchar(255) NOT NULL UNIQUE,
   description text NOT NULL,
   objective_intro text,
-  PRIMARY KEY (technology_id)
+  commodity_id int(4),
+  PRIMARY KEY (technology_id),
+  FOREIGN KEY (commodity_id) REFERENCES COMMODITY(commodity_id) ON DELETE CASCADE
 );
 
-/*
-  COMMODITY
-    name
-    category
-    technologies (ref:TECHNOLOGY)
-*/
 
-CREATE TABLE IF NOT EXISTS COMMODITY (
-  commodity_id int(4) NOT NULL AUTO_INCREMENT,
-  name varchar(64) NOT NULL,
-  category varchar(64) NOT NULL,
-  PRIMARY KEY (commodity_id),
-  FOREIGN KEY (category) REFERENCES CATEGORY(name) ON DELETE CASCADE
-);
 
 /*
   OBJECTIVE
@@ -157,7 +159,7 @@ INSERT INTO CATEGORY ( name )
     ( 'Livestock' ),
     ( 'Forest and Environment' );
 
-source sipag-fiesta-CROPS.sql;
 source sipag-fiesta-AQUATIC.sql;  
+source sipag-fiesta-CROPS.sql;
 source sipag-fiesta-LIVESTOCK.sql;
 source sipag-fiesta-FOREST.sql;
