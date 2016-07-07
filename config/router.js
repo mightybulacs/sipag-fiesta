@@ -11,7 +11,7 @@ module.exports = (router) => {
   router.del = router.delete;
 
   router.get ('/test',          __.test.get_test);
-  router.get ('/comodities',    __.commodity.get_test);
+  router.get ('/commodities',    __.commodity.get_test);
 
   //CATEGORY
   router.get ('/categories',    __.category.get_category);
