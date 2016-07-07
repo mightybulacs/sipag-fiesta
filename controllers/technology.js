@@ -9,7 +9,7 @@ exports.get_oneTechnology = (req, res, next) => {
   function start () {
     mysql.use('slave')
       .query(
-        'SELECT title FROM TECHNOLOGY where technology_id=?',
+        'SELECT * FROM TECHNOLOGY where technology_id=?',
         [req.params.id],
         send_response
       )
@@ -29,14 +29,14 @@ exports.get_oneTechnology = (req, res, next) => {
   start();
 }
 
-/*// /:category/technologies
+// /:category/technologies
 exports.get_category_technology = (req, res, next) => {
 
   function start () {
     mysql.use('slave')
       .query(
-        'SELECT * FROM CATEGORY where category=?',
-        [req.params.id, req.params.category],
+        'SELECT * FROM TECHNOLOGY t, COMMODITY c WHERE c.category=? and t.commodity_id = c.commodity_id',
+        [req.params.category],
         send_response
       )
       .end();
@@ -61,14 +61,18 @@ exports.get_commodity_technology = (req, res, next) => {
   function start () {
     mysql.use('slave')
       .query(
-        'SELECT * FROM COMMODITY where commodity.technology_id=technology_id',
-        [req.params.id, req.params.category],
+        'SELECT * FROM TECHNOLOGY t, COMMODITY c WHERE c.name=? and t.commodity_id = c.commodity_id',
+        [req.params.commodity],
         send_response
       )
       .end();
   }
 
   function send_response (err, result, args, last_query) {
+    console.log("err: " + err);
+    console.log("result: " + result);
+    console.log("args: " + args);
+    console.log("last_query: " + last_query);
     if (err) {
       winston.error('Error in getting technology', last_query);
       return next(err);
@@ -79,7 +83,7 @@ exports.get_commodity_technology = (req, res, next) => {
   }
 
   start();
-}*/
+}
 
 // /technologies
 exports.get_technology = (req, res, next) => {
@@ -87,7 +91,7 @@ exports.get_technology = (req, res, next) => {
   function start () {
     mysql.use('slave')
       .query(
-        'SELECT title FROM TECHNOLOGY',
+        'SELECT * FROM TECHNOLOGY',
         send_response
       )
       .end();
