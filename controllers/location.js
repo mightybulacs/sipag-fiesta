@@ -119,7 +119,7 @@ exports.delete_location = (req, res, next) => {
   function start () {
     mysql.use('slave')
       .query(
-        'DELETE FROM location WHERE location_id=?', 
+        'DELETE FROM LOCATION WHERE location_id=?', 
         [req.params.id],
         send_response
       )
