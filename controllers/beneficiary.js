@@ -137,7 +137,6 @@ exports.delete_beneficiary = (req, res, next) => {
     }
     res.status(200)
         .send({message:'Beneficiary [' + req.params.id + '] was deleted.'});
-
   }
 
   start();
