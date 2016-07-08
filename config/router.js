@@ -58,8 +58,8 @@ module.exports = (router) => {
   //TECHNOLOGY
   router.get ('/technologies/:id',                              __.technology.get_oneTechnology);
   router.get ('/technologies/:page/:size',                      __.technology.get_technology);
-  router.get ('/:category/technologies/:page/:size',            __.technology.get_category_technology);
-  router.get ('/:commodity/technologies/:page/:size',           __.technology.get_commodity_technology);
+  router.get ('/category/:category/technologies/:page/:size',            __.technology.get_category_technology);
+  router.get ('/commodity/:commodity/technologies/:page/:size',           __.technology.get_commodity_technology);
   router.post('/technologies',                                  __.technology.post_technology);
   router.put ('/technologies/:id',                              __.technology.put_technology);
   router.del ('/technologies/:id',                              __.technology.delete_technology);     
