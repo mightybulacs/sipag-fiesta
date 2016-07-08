@@ -3,13 +3,22 @@
 const mysql   = require('anytv-node-mysql');
 const winston = require('winston');
 
-
+// /categories/:page/:size
 exports.get_category = (req, res, next) => {
 
   function start () {
+    let page = filterInt(req.params.page);
+    let size = filterInt(req.params.size);
+    if(!Number.isInteger(page) || page<=0)
+      return res.status(451).send({'error': true, 'message': 'Invalid parameter: page'});
+    if(!Number.isInteger(size) || size<=0)
+      return res.status(451).send({'error': true, 'message': 'Invalid parameter: size'});
+    page = (page - 1) * size;
+
     mysql.use('slave')
       .query(
-        'SELECT * FROM CATEGORY',
+        'SELECT * FROM CATEGORY LIMIT ?, ?',
+        [page, size],
         send_response
       )
       .end();
@@ -20,6 +29,10 @@ exports.get_category = (req, res, next) => {
       winston.error('Error in getting category', last_query);
       return next(err);
     }
+    else if(result.length === 0){
+      res.status(404)
+          .send({message:'Categories not found!'});
+    }
 
     res.items(result)
       .send();
@@ -28,6 +41,7 @@ exports.get_category = (req, res, next) => {
   start();
 }
 
+// /categories
 exports.post_category = (req, res, next) => {
 
   function start () {
@@ -51,16 +65,17 @@ exports.post_category = (req, res, next) => {
 
     let newCategory = {
       name: req.body.name,
-      thumbnail: req.body.name
+      thumbnail: req.body.thumbnail
     };
-    //res.items(result)
-    //  .send();
-    res.status(200).send(newCategory);
+    
+    res.status(200)
+      .send(newCategory);
   }
 
   start();
 }
 
+// /categories/:name
 exports.put_category = (req, res, next) => {
 
   function start () {
@@ -80,14 +95,26 @@ exports.put_category = (req, res, next) => {
     }
     else if(result.affectedRows === 0){
       res.status(404)
-          .send({message:'Category '+req.params.name +' not found!'});
+          .send({message:'Category '+ req.params.name +' not found!'});
     }
-    res.status(200).send(result);
+    mysql.use('slave')
+      .query(
+          'SELECT * FROM CATEGORY WHERE name=?',
+          [req.params.name],
+          send_edited_row
+        )
+      .end();
+  }
+
+  function send_edited_row(err, rows){
+    res.status(200)
+        .send(rows);
   }
 
   start();
 };
 
+// /categories/:name
 exports.delete_category = (req, res, next) => {
 
   function start () {
@@ -107,10 +134,17 @@ exports.delete_category = (req, res, next) => {
     }
     else if(result.affectedRows === 0){
       res.status(404)
-          .send({message:'Category '+req.params.name +' not found!'});
+          .send({message:'Category ['+req.params.name +'] not found!'});
     }
-    res.status(200).send(result);
+    res.status(200)
+      .send({message:'Category [' + req.params.name + '] was deleted.'});
   }
 
   start();
 };
+
+function filterInt (value) {
+  if(/^(\-|\+)?([0-9]+|Infinity)$/.test(value))
+    return Number(value);
+  return NaN;
+}
