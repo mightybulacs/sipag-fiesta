@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS COMMODITY (
   name varchar(64) NOT NULL,
   category varchar(64) NOT NULL,
   PRIMARY KEY (commodity_id),
-  FOREIGN KEY (category) REFERENCES CATEGORY(name) ON DELETE CASCADE
+  FOREIGN KEY (category) REFERENCES CATEGORY(name) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 /*
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS TECHNOLOGY (
   objective_intro text,
   commodity_id int(4),
   PRIMARY KEY (technology_id),
-  FOREIGN KEY (commodity_id) REFERENCES COMMODITY(commodity_id) ON DELETE CASCADE
+  FOREIGN KEY (commodity_id) REFERENCES COMMODITY(commodity_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS OBJECTIVE (
   technology_id int(4) NOT NULL,
   objective text,
   PRIMARY KEY (objective_id),
-  FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE
+  FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 /*
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS BENEFIT (
   technology_id int(4) NOT NULL,
   benefit text NOT NULL,
   PRIMARY KEY (benefit_id),
-  FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE
+  FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 /*
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS BENEFICIARY (
   technology_id int(4) NOT NULL,
   beneficiary text NOT NULL,
   PRIMARY KEY (beneficiary_id),
-  FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE
+  FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 /*
@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS LOCATION (
   technology_id int(4) NOT NULL,
   location varchar(64) NOT NULL,
   PRIMARY KEY (location_id),
-  FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE
+  FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 /*  
@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS PARTNER (
   technology_id int(4) NOT NULL,
   partner varchar(128) NOT NULL,
   PRIMARY KEY (partner_id),
-  FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE
+  FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
