@@ -33,25 +33,84 @@ exports.get_oneTechnology = (req, res, next) => {
   start();
 }
 
-// /category/:category/technologies/:page/:size
-exports.get_category_technology = (req, res, next) => {
+// /technologies or /technologies?page=?&size=?
+exports.get_technology = (req, res, next) => {
 
   function start () {
-    let page = filterInt(req.params.page);
-    let size = filterInt(req.params.size);
-    if(!Number.isInteger(page) || page<=0)
-      return res.status(451).send({'error': true, 'message': 'Invalid parameter: page'});
-    if(!Number.isInteger(size) || size<=0)
-      return res.status(451).send({'error': true, 'message': 'Invalid parameter: size'});
-    page = (page - 1) * size;
-
-    mysql.use('slave')
+    let page = filterInt(req.query.page);
+    let size = filterInt(req.query.size);
+    if(!/\?.+/.test(req.url)) {     //if there is no query
+      mysql.use('slave')
       .query(
-        'SELECT * FROM TECHNOLOGY t, COMMODITY c WHERE c.category=? and t.commodity_id = c.commodity_id LIMIT ?, ?',
-        [req.params.category, page, size],
+        'SELECT * FROM TECHNOLOGY',
         send_response
       )
       .end();
+    }
+    else {                          //if there are queries
+      if(!Number.isInteger(page) || page<=0)
+        return res.status(451).send({'error': true, 'message': 'Invalid query: page'});
+      if(!Number.isInteger(size) || size<=0)
+        return res.status(451).send({'error': true, 'message': 'Invalid query: size'});
+      page = (page - 1) * size;
+
+      mysql.use('slave')
+        .query(
+          'SELECT * FROM TECHNOLOGY LIMIT ?, ?',
+          [page, size],
+          send_response
+        )
+        .end();
+    }
+  }
+
+  function send_response (err, result, args, last_query) {
+    if (err) {
+      winston.error('Error in getting technologies', last_query);
+      return next(err);
+    }
+    else if(result.length === 0){
+      res.status(404)
+          .send({message:'Technologies not found!'});
+    }
+
+    res.items(result)
+      .send();
+  }
+
+  start();
+}
+
+// /category/:category/technologies or /category/:category/technologies?page=?&size=?
+exports.get_category_technology = (req, res, next) => {
+
+  function start () {
+    let page = filterInt(req.query.page);
+    let size = filterInt(req.query.size);
+    if(!/\?.+/.test(req.url)) {     //if there is no query
+      mysql.use('slave')
+      .query(
+        'SELECT * FROM TECHNOLOGY t, COMMODITY c WHERE c.category=? and t.commodity_id = c.commodity_id',
+        [req.params.category],
+        send_response
+      )
+      .end();
+    }
+    else {                          //if there are queries
+      if(!Number.isInteger(page) || page<=0)
+        return res.status(451).send({'error': true, 'message': 'Invalid query: page'});
+      if(!Number.isInteger(size) || size<=0)
+        return res.status(451).send({'error': true, 'message': 'Invalid query: size'});
+      page = (page - 1) * size;
+
+      mysql.use('slave')
+        .query(
+          'SELECT * FROM TECHNOLOGY t, COMMODITY c WHERE c.category=? and t.commodity_id = c.commodity_id LIMIT ?, ?',
+          [req.params.category, page, size],
+          send_response
+        )
+        .end();
+    }
   }
 
   function send_response (err, result, args, last_query) {
@@ -71,25 +130,36 @@ exports.get_category_technology = (req, res, next) => {
   start();
 }
 
-// /commodity/:commodity/technologies/:page/:size
+// /commodity/:commodity/technologies or /commodity/:commodity/technologies?page=?&size=?
 exports.get_commodity_technology = (req, res, next) => {
 
   function start () {
-    let page = filterInt(req.params.page);
-    let size = filterInt(req.params.size);
-    if(!Number.isInteger(page) || page<=0)
-      return res.status(451).send({'error': true, 'message': 'Invalid parameter: page'});
-    if(!Number.isInteger(size) || size<=0)
-      return res.status(451).send({'error': true, 'message': 'Invalid parameter: size'});
-    page = (page - 1) * size;
-
-    mysql.use('slave')
+    let page = filterInt(req.query.page);
+    let size = filterInt(req.query.size);
+    if(!/\?.+/.test(req.url)) {     //if there is no query
+      mysql.use('slave')
       .query(
-        'SELECT * FROM TECHNOLOGY t, COMMODITY c WHERE c.name=? and t.commodity_id = c.commodity_id LIMIT ?, ?',
-        [req.params.commodity, page, size],
+        'SELECT * FROM TECHNOLOGY t, COMMODITY c WHERE c.name=? and t.commodity_id = c.commodity_id',
+        [req.params.commodity],
         send_response
       )
       .end();
+    }
+    else {                          //if there are queries
+      if(!Number.isInteger(page) || page<=0)
+        return res.status(451).send({'error': true, 'message': 'Invalid query: page'});
+      if(!Number.isInteger(size) || size<=0)
+        return res.status(451).send({'error': true, 'message': 'Invalid query: size'});
+      page = (page - 1) * size;
+
+      mysql.use('slave')
+        .query(
+          'SELECT * FROM TECHNOLOGY t, COMMODITY c WHERE c.name=? and t.commodity_id = c.commodity_id LIMIT ?, ?',
+        [req.params.commodity, page, size],
+          send_response
+        )
+        .end();
+    }
   }
 
   function send_response (err, result, args, last_query) {
@@ -100,44 +170,6 @@ exports.get_commodity_technology = (req, res, next) => {
     else if(result.length === 0){
       res.status(404)
           .send({message:'Technologies of Commodity [' + req.params.commodity +'] not found!'});
-    }
-
-    res.items(result)
-      .send();
-  }
-
-  start();
-}
-
-// /technologies/:page/:size
-exports.get_technology = (req, res, next) => {
-
-  function start () {
-    let page = filterInt(req.params.page);
-    let size = filterInt(req.params.size);
-    if(!Number.isInteger(page) || page<=0)
-      return res.status(451).send({'error': true, 'message': 'Invalid parameter: page'});
-    if(!Number.isInteger(size) || size<=0)
-      return res.status(451).send({'error': true, 'message': 'Invalid parameter: size'});
-    page = (page - 1) * size;
-
-    mysql.use('slave')
-      .query(
-        'SELECT * FROM TECHNOLOGY LIMIT ?, ?',
-        [page, size],
-        send_response
-      )
-      .end();
-  }
-
-  function send_response (err, result, args, last_query) {
-    if (err) {
-      winston.error('Error in getting technologies', last_query);
-      return next(err);
-    }
-    else if(result.length === 0){
-      res.status(404)
-          .send({message:'Technologies not found!'});
     }
 
     res.items(result)
@@ -190,6 +222,13 @@ exports.post_technology = (req, res, next) => {
 exports.put_technology = (req, res, next) => {
 
   function start () {
+    if (!req.body.title)
+      return res.status(451).send({'error': true, 'message': 'Missing parameter: title'});
+    if (!req.body.description)
+      return res.status(451).send({'error': true, 'message': 'Missing parameter: description'});
+    if (!req.body.objective_intro)
+      return res.status(451).send({'error': true, 'message': 'Missing parameter: objective intro'});
+    
     mysql.use('slave')
       .query(
         'UPDATE TECHNOLOGY SET title=?, description=?, objective_intro=? WHERE technology_id=?', 
