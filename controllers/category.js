@@ -3,6 +3,12 @@
 const mysql   = require('anytv-node-mysql');
 const winston = require('winston');
 
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3();
+const fs = require('fs');
+const path = require('path');
+const fileUploader = require('./../utils/s3-file-upload');
+
 // /categories/:page/:size
 exports.get_category = (req, res, next) => {
 
@@ -63,13 +69,58 @@ exports.post_category = (req, res, next) => {
       return next(err);
     }
 
-    let newCategory = {
-      name: req.body.name,
-      thumbnail: req.body.thumbnail
-    };
-    
+    if(!req.body.thumbnail){ //no thumbnail to upload
+      mysql.use('slave')
+        .query(
+            'SELECT * FROM CATEGORY WHERE name=?',
+            [req.body.name],
+            send_new_row
+          )
+       .end();
+    }
+    else 
+      uploadImage(req.body.thumbnail); //upload image
+  }
+
+  function uploadImage(filePath){
+    var filename = filePath.substring(0, filePath.lastIndexOf("/"));
+
+    fileUploader.uploadFile('category/'+filename, filePath);
+
+    var params = {Bucket: 'sipag-fiesta', Key: 'category/'+filename};
+    s3.getSignedUrl('getObject', params, function (err, url) {
+      mysql.use('slave')
+        .query(
+          'UPDATE CATEGORY SET thumbnail=? WHERE name=?', 
+          [url, req.body.name],
+          send_updated_row
+        )
+        .end(); 
+    });
+  }
+
+  function send_updated_row(err, result, args, last_query){
+    if(err){
+      winston.error('Error in putting category', last_query);
+      return next(err);
+    }
+    else if(result.affectedRows === 0){
+      res.status(404)
+          .send({message:'Category '+ req.params.name +' not found!'});
+    }
+    mysql.use('slave')
+      .query(
+          'SELECT * FROM CATEGORY WHERE name=?',
+          [req.body.name],
+          send_new_row
+
+        )
+      .end();
+  }
+
+  function send_new_row(err, rows){
     res.status(200)
-      .send(newCategory);
+        .send(rows);
   }
 
   start();
@@ -79,18 +130,42 @@ exports.post_category = (req, res, next) => {
 exports.put_category = (req, res, next) => {
 
   function start () {
-    mysql.use('slave')
-      .query(
-        'UPDATE CATEGORY SET name=?, thumbnail=? WHERE name=?', 
-        [req.body.name, req.body.thumbnail, req.params.name],
-        send_response
-      )
-      .end();
+    if (!req.body.name)
+      return res.status(451).send({'error': true, 'message': 'Missing parameter: name'});
+
+    if(!req.body.thumbnail){ //no thumbnail to upload
+      mysql.use('slave')
+        .query(
+          'UPDATE CATEGORY SET name=?, thumbnail=? WHERE name=?', 
+          [req.body.name, req.body.thumbnail, req.params.name],
+          send_response
+        )
+        .end();
+    }
+    else
+      uploadImage(req.body.thumbnail); //upload image
+  }
+
+  function uploadImage(filePath){
+    var filename = filePath.substring(0, filePath.lastIndexOf("/"));
+
+    fileUploader.uploadFile('category/'+filename, filePath);
+
+    var params = {Bucket: 'sipag-fiesta', Key: 'category/'+filename};
+    s3.getSignedUrl('getObject', params, function (err, url) {
+      mysql.use('slave')
+        .query(
+          'UPDATE CATEGORY SET thumbnail=? WHERE name=?', 
+          [url, req.body.name],
+          send_response
+        )
+        .end(); 
+    });
   }
 
   function send_response (err, result, args, last_query) {
     if (err) {
-      winston.error('Error in posting category', last_query);
+      winston.error('Error in putting category', last_query);
       return next(err);
     }
     else if(result.affectedRows === 0){
