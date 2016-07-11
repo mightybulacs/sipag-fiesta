@@ -3,6 +3,12 @@
 const mysql   = require('anytv-node-mysql');
 const winston = require('winston');
 
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3();
+const fs = require('fs');
+const path = require('path');
+const fileUploader = require('./../utils/s3-file-upload');
+
 // /commodities or /commodities?page=?&size=?
 exports.get_commodity = (req, res, next) => {
 
@@ -102,15 +108,18 @@ exports.get_commodity_category = (req, res, next) => {
 
 // /commodities
 exports.post_commodity = (req, res, next) => {
+  let lastInsertId;
 
   function start () {
     if (!req.body.name)
       return res.status(451).send({'error': true, 'message': 'Missing parameter: name'});
+    if (!req.body.category)
+      return res.status(451).send({'error': true, 'message': 'Missing parameter: category'});
 
     mysql.use('slave')
       .query(
-        'INSERT INTO COMMODITY (name, category) VALUES (?,?)', 
-        [req.body.name, req.body.category],
+        'INSERT INTO COMMODITY (name, category, thumbnail) VALUES (?,?,?)', 
+        [req.body.name, req.body.category, req.body.thumbnail],
         send_response
       )
       .end();
@@ -121,13 +130,59 @@ exports.post_commodity = (req, res, next) => {
       winston.error('Error in posting commodity', last_query);
       return next(err);
     }
+    
+    lastInsertId = result.insertId;
+    if(!req.body.thumbnail){ //no thumbnail to upload
+      mysql.use('slave')
+        .query(
+            'SELECT * FROM COMMODITY WHERE commodity_id=?',
+            [lastInsertId],
+            send_new_row
+          )
+       .end();
+    }
+    else 
+      uploadImage(req.body.thumbnail); //upload image
+  }
 
-    let newCommodity = {
-      name: req.body.name,
-      category: req.body.category
-    };
+  function uploadImage(filePath){
+    var filename = filePath.split('/').pop();
+
+    fileUploader.uploadFile('commodity/'+filename, filePath);
+
+    var params = {Bucket: 'sipag-fiesta', Key: 'commodity/'+filename};
+    s3.getSignedUrl('getObject', params, function (err, url) {
+      mysql.use('slave')
+        .query(
+          'UPDATE COMMODITY SET thumbnail=? WHERE commodity_id=?', 
+          [url, lastInsertId],
+          send_updated_row
+        )
+        .end(); 
+    });
+  }
+
+  function send_updated_row(err, result, args, last_query){
+    if(err){
+      winston.error('Error in putting commodity', last_query);
+      return next(err);
+    }
+    else if(result.affectedRows === 0){
+      res.status(404)
+          .send({message:'Commodity '+ req.params.name +' not found!'});
+    }
+    mysql.use('slave')
+      .query(
+          'SELECT * FROM COMMODITY WHERE commodity_id=?',
+          [lastInsertId],
+          send_new_row
+        )
+      .end();
+  }
+
+  function send_new_row(err, rows){
     res.status(200)
-      .send(newCommodity);
+        .send(rows);
   }
 
   start();
@@ -139,14 +194,37 @@ exports.put_commodity = (req, res, next) => {
   function start () {
     if (!req.body.name)
       return res.status(451).send({'error': true, 'message': 'Missing parameter: name'});
+    if (!req.body.category)
+      return res.status(451).send({'error': true, 'message': 'Missing parameter: category'});
 
-    mysql.use('slave')
-      .query(
-        'UPDATE COMMODITY SET name=?, category=? WHERE commodity_id=?', 
-        [req.body.name, req.body.category, req.params.id],
-        send_response
-      )
-      .end();
+    if(!req.body.thumbnail){ //no thumbnail to upload
+      mysql.use('slave')
+        .query(
+          'UPDATE COMMODITY SET name=?, category=? WHERE commodity_id=?', 
+          [req.body.name, req.body.category, req.params.id],
+          send_response
+        )
+        .end();
+    }
+    else
+      uploadImage(req.body.thumbnail);
+  }
+
+  function uploadImage(filePath){
+    var filename = filePath.split('/').pop();
+
+    fileUploader.uploadFile('commodity/'+filename, filePath);
+
+    var params = {Bucket: 'sipag-fiesta', Key: 'commodity/'+filename};
+    s3.getSignedUrl('getObject', params, function (err, url) {
+      mysql.use('slave')
+        .query(
+          'UPDATE COMMODITY SET thumbnail=? WHERE commodity_id=?', 
+          [url, req.params.id],
+          send_edited_row
+        )
+        .end(); 
+    });
   }
 
   function send_response (err, result, args, last_query) {
