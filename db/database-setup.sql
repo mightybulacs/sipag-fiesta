@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS COMMODITY (
   commodity_id int(4) NOT NULL AUTO_INCREMENT,
   name varchar(64) NOT NULL,
   category varchar(64) NOT NULL,
+  thumbnail tinytext,
   PRIMARY KEY (commodity_id),
   FOREIGN KEY (category) REFERENCES CATEGORY(name) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -148,6 +149,20 @@ CREATE TABLE IF NOT EXISTS PARTNER (
   FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+/*
+  IMAGES
+    image_id
+    technology_id
+    filename
+*/
+
+CREATE TABLE IF NOT EXISTS IMAGE (
+  image_id int(4) NOT NULL AUTO_INCREMENT,
+  technology_id int(4) NOT NULL,
+  filename tinytext NOT NULL,
+  PRIMARY KEY (partner_id),
+  FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 
 /*Populate tables*/
