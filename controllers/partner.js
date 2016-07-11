@@ -3,25 +3,36 @@
 const mysql   = require('anytv-node-mysql');
 const winston = require('winston');
 
-// /technologies/:id/partners/:page/:size
+// /technologies/:id/partners or /technologies/:id/partners?page=?&size=?
 exports.get_partner = (req, res, next) => {
 
   function start () {
-    let page = filterInt(req.params.page);
-    let size = filterInt(req.params.size);
-    if(!Number.isInteger(page) || page<=0)
-      return res.status(451).send({'error': true, 'message': 'Invalid parameter: page'});
-    if(!Number.isInteger(size) || size<=0)
-      return res.status(451).send({'error': true, 'message': 'Invalid parameter: size'});
-    page = (page - 1) * size;
-
-    mysql.use('slave')
+    let page = filterInt(req.query.page);
+    let size = filterInt(req.query.size);
+    if(!/\?.+/.test(req.url)) {     //if there is no query
+      mysql.use('slave')
       .query(
-        'SELECT * FROM PARTNER WHERE technology_id = ? LIMIT ?, ?',
-        [req.params.id, page, size],
+        'SELECT * FROM PARTNER WHERE technology_id = ?',
+        [req.params.id],
         send_response
       )
       .end();
+    }
+    else {                          //if there are queries
+      if(!Number.isInteger(page) || page<=0)
+        return res.status(451).send({'error': true, 'message': 'Invalid query: page'});
+      if(!Number.isInteger(size) || size<=0)
+        return res.status(451).send({'error': true, 'message': 'Invalid query: size'});
+      page = (page - 1) * size;
+
+      mysql.use('slave')
+        .query(
+          'SELECT * FROM PARTNER WHERE technology_id = ? LIMIT ?, ?',
+          [req.params.id, page, size],
+          send_response
+        )
+        .end();
+    }
   }
 
   function send_response (err, result, args, last_query) {
@@ -31,7 +42,7 @@ exports.get_partner = (req, res, next) => {
     }
     else if(result.length === 0){
       res.status(404)
-          .send({message:'partners of Technology [' + req.params.id +'] not found!'});
+          .send({message:'Partners of Technology [' + req.params.id +'] not found!'});
     }
 
     res.items(result)
@@ -78,6 +89,9 @@ exports.post_partner = (req, res, next) => {
 exports.put_partner = (req, res, next) => {
 
   function start () {
+    if (!req.body.partner)
+      return res.status(451).send({'error': true, 'message': 'Missing parameter: partner'});
+    
     mysql.use('slave')
       .query(
         'UPDATE PARTNER SET partner=? WHERE partner_id=?', 
