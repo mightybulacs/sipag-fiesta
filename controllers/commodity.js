@@ -3,25 +3,35 @@
 const mysql   = require('anytv-node-mysql');
 const winston = require('winston');
 
-// /commodities/:page/:size
+// /commodities or /commodities?page=?&size=?
 exports.get_commodity = (req, res, next) => {
 
   function start () {
-    let page = filterInt(req.params.page);
-    let size = filterInt(req.params.size);
-    if(!Number.isInteger(page) || page<=0)
-      return res.status(451).send({'error': true, 'message': 'Invalid parameter: page'});
-    if(!Number.isInteger(size) || size<=0)
-      return res.status(451).send({'error': true, 'message': 'Invalid parameter: size'});
-    page = (page - 1) * size;
-
-    mysql.use('slave')
+    let page = filterInt(req.query.page);
+    let size = filterInt(req.query.size);
+    if(!/\?.+/.test(req.url)) {     //if there is no query
+      mysql.use('slave')
       .query(
-        'SELECT * FROM COMMODITY LIMIT ?, ?',
-        [page, size],
+        'SELECT * FROM COMMODITY',
         send_response
       )
       .end();
+    }
+    else {                          //if there are queries
+      if(!Number.isInteger(page) || page<=0)
+        return res.status(451).send({'error': true, 'message': 'Invalid query: page'});
+      if(!Number.isInteger(size) || size<=0)
+        return res.status(451).send({'error': true, 'message': 'Invalid query: size'});
+      page = (page - 1) * size;
+
+      mysql.use('slave')
+        .query(
+          'SELECT * FROM COMMODITY LIMIT ?, ?',
+          [page, size],
+          send_response
+        )
+        .end();
+    }
   }
 
   function send_response (err, result, args, last_query) {
@@ -41,24 +51,36 @@ exports.get_commodity = (req, res, next) => {
   start();
 }
 
-// /:category/commodities/:page/:size
+// /:category/commodities or /:category/commodities?page=?&size=?
 exports.get_commodity_category = (req, res, next) => {
 
   function start () {
-    let page = filterInt(req.params.page);
-    let size = filterInt(req.params.size);
-    if(!Number.isInteger(page) || page<=0)
-      return res.status(451).send({'error': true, 'message': 'Invalid parameter: page'});
-    if(!Number.isInteger(size) || size<=0)
-      return res.status(451).send({'error': true, 'message': 'Invalid parameter: size'});
-    page = (page - 1) * size;
-    mysql.use('slave')
+    let page = filterInt(req.query.page);
+    let size = filterInt(req.query.size);
+    if(!/\?.+/.test(req.url)) {     //if there is no query
+      mysql.use('slave')
       .query(
-        'SELECT * FROM COMMODITY WHERE category=? LIMIT ?, ?',
-        [req.params.category, page, size],
+        'SELECT * FROM COMMODITY WHERE category=?',
+        [req.params.category],
         send_response
       )
       .end();
+    }
+    else {                          //if there are queries
+      if(!Number.isInteger(page) || page<=0)
+        return res.status(451).send({'error': true, 'message': 'Invalid query: page'});
+      if(!Number.isInteger(size) || size<=0)
+        return res.status(451).send({'error': true, 'message': 'Invalid query: size'});
+      page = (page - 1) * size;
+
+      mysql.use('slave')
+        .query(
+          'SELECT * FROM COMMODITY WHERE category=? LIMIT ?, ?',
+          [req.params.category, page, size],
+          send_response
+        )
+        .end();
+    }
   }
 
   function send_response (err, result, args, last_query) {
@@ -115,6 +137,9 @@ exports.post_commodity = (req, res, next) => {
 exports.put_commodity = (req, res, next) => {
 
   function start () {
+    if (!req.body.name)
+      return res.status(451).send({'error': true, 'message': 'Missing parameter: name'});
+
     mysql.use('slave')
       .query(
         'UPDATE COMMODITY SET name=?, category=? WHERE commodity_id=?', 
