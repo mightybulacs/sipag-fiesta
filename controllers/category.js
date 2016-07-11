@@ -93,7 +93,7 @@ exports.post_category = (req, res, next) => {
   }
 
   function uploadImage(filePath){
-    var filename = filePath.substring(0, filePath.lastIndexOf("/"));
+    var filename = filePath.split('/').pop();
 
     fileUploader.uploadFile('category/'+filename, filePath);
 
@@ -157,7 +157,7 @@ exports.put_category = (req, res, next) => {
   }
 
   function uploadImage(filePath){
-    var filename = filePath.substring(0, filePath.lastIndexOf("/"));
+    var filename = filePath.split('/').pop();
 
     fileUploader.uploadFile('category/'+filename, filePath);
 
