@@ -3,25 +3,36 @@
 const mysql   = require('anytv-node-mysql');
 const winston = require('winston');
 
-// /technologies/:id/objectives/:page/:size
+// /technologies/:id/objectives or /technologies/:id/objectives?page=?&size=?
 exports.get_objective = (req, res, next) => {
 
   function start () {
-    let page = filterInt(req.params.page);
-    let size = filterInt(req.params.size);
-    if(!Number.isInteger(page) || page<=0)
-      return res.status(451).send({'error': true, 'message': 'Invalid parameter: page'});
-    if(!Number.isInteger(size) || size<=0)
-      return res.status(451).send({'error': true, 'message': 'Invalid parameter: size'});
-    page = (page - 1) * size;
-
-    mysql.use('slave')
+    let page = filterInt(req.query.page);
+    let size = filterInt(req.query.size);
+    if(!/\?.+/.test(req.url)) {     //if there is no query
+      mysql.use('slave')
       .query(
-        'SELECT * FROM OBJECTIVE where technology_id=? LIMIT ?, ?',
-        [req.params.id, page, size],
+        'SELECT * FROM OBJECTIVE where technology_id = ?',
+        [req.params.id],
         send_response
       )
       .end();
+    }
+    else {                          //if there are queries
+      if(!Number.isInteger(page) || page<=0)
+        return res.status(451).send({'error': true, 'message': 'Invalid query: page'});
+      if(!Number.isInteger(size) || size<=0)
+        return res.status(451).send({'error': true, 'message': 'Invalid query: size'});
+      page = (page - 1) * size;
+
+      mysql.use('slave')
+        .query(
+          'SELECT * FROM OBJECTIVE where technology_id=? LIMIT ?, ?',
+          [req.params.id, page, size],
+          send_response
+        )
+        .end();
+    }
   }
 
   function send_response (err, result, args, last_query) {
@@ -66,8 +77,6 @@ exports.post_objective = (req, res, next) => {
     let newObjective = {
       objective: req.body.objective
     };
-    //res.items(result)
-    //  .send();
     res.status(200).send(newObjective);
   }
 
@@ -78,6 +87,9 @@ exports.post_objective = (req, res, next) => {
 exports.put_objective = (req, res, next) => {
 
   function start () {
+    if (!req.body.objective)
+      return res.status(451).send({'error': true, 'message': 'Missing parameter: objective'});
+
     mysql.use('slave')
       .query(
         'UPDATE OBJECTIVE SET objective=? WHERE objective_id=?', 
