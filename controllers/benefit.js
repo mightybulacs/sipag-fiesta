@@ -3,25 +3,36 @@
 const mysql   = require('anytv-node-mysql');
 const winston = require('winston');
 
-// /technologies/:id/benefits/:page/:size
+// /technologies/:id/benefits or /technologies/:id/benefits?page=?&size=?
 exports.get_benefit = (req, res, next) => {
 
   function start () {
-    let page = filterInt(req.params.page);
-    let size = filterInt(req.params.size);
-    if(!Number.isInteger(page) || page<=0)
-      return res.status(451).send({'error': true, 'message': 'Invalid parameter: page'});
-    if(!Number.isInteger(size) || size<=0)
-      return res.status(451).send({'error': true, 'message': 'Invalid parameter: size'});
-    page = (page - 1) * size;
-
-    mysql.use('slave')
+    let page = filterInt(req.query.page);
+    let size = filterInt(req.query.size);
+    if(!/\?.+/.test(req.url)) {     //if there is no query
+      mysql.use('slave')
       .query(
-        'SELECT * FROM BENEFIT where technology_id=? LIMIT ?, ?',
-        [req.params.id, page, size],
+        'SELECT * FROM BENEFIT WHERE technology_id = ?',
+        [req.params.id],
         send_response
       )
       .end();
+    }
+    else {                          //if there are queries
+      if(!Number.isInteger(page) || page<=0)
+        return res.status(451).send({'error': true, 'message': 'Invalid query: page'});
+      if(!Number.isInteger(size) || size<=0)
+        return res.status(451).send({'error': true, 'message': 'Invalid query: size'});
+      page = (page - 1) * size;
+
+      mysql.use('slave')
+        .query(
+          'SELECT * FROM BENEFIT where technology_id = ? LIMIT ?, ?',
+          [req.params.id, page, size],
+          send_response
+        )
+        .end();
+    }
   }
 
   function send_response (err, result, args, last_query) {
@@ -78,6 +89,9 @@ exports.post_benefit = (req, res, next) => {
 exports.put_benefit = (req, res, next) => {
 
   function start () {
+    if (!req.body.benefit)
+      return res.status(451).send({'error': true, 'message': 'Missing parameter: benefit'});
+
     mysql.use('slave')
       .query(
         'UPDATE BENEFIT SET benefit=? WHERE benefit_id=?', 
