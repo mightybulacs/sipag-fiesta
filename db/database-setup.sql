@@ -174,7 +174,10 @@ INSERT INTO CATEGORY ( name )
     ( 'Livestock' ),
     ( 'Forest and Environment' );
 
+/*
 source sipag-fiesta-AQUATIC.sql;  
 source sipag-fiesta-CROPS.sql;
 source sipag-fiesta-LIVESTOCK.sql;
 source sipag-fiesta-FOREST.sql;
+*/
+source db-save.sql;
