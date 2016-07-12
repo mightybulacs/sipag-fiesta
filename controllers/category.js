@@ -93,7 +93,7 @@ exports.post_category = (req, res, next) => {
   }
 
   function uploadImage(filePath){
-    var filename = filePath.split('/').pop();
+    var filename = 'cat'+req.body.name+'-'+filePath.split('/').pop();
 
     fileUploader.uploadFile('category/'+filename, filePath);
 
@@ -157,7 +157,7 @@ exports.put_category = (req, res, next) => {
   }
 
   function uploadImage(filePath){
-    var filename = filePath.split('/').pop();
+    var filename = 'cat'+req.body.name+'-'+filePath.split('/').pop();
 
     fileUploader.uploadFile('category/'+filename, filePath);
 
@@ -165,8 +165,8 @@ exports.put_category = (req, res, next) => {
     s3.getSignedUrl('getObject', params, function (err, url) {
       mysql.use('slave')
         .query(
-          'UPDATE CATEGORY SET thumbnail=? WHERE name=?', 
-          [url, req.body.name],
+          'UPDATE CATEGORY SET thumbnail=?, name=? WHERE name=?', 
+          [url, req.body.name, req.params.name],
           send_response
         )
         .end(); 
@@ -186,7 +186,7 @@ exports.put_category = (req, res, next) => {
     mysql.use('slave')
       .query(
           'SELECT * FROM CATEGORY WHERE name=?',
-          [req.params.name],
+          [req.body.name],
           send_edited_row
         )
       .end();
