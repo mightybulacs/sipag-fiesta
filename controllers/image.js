@@ -117,10 +117,10 @@ exports.post_image = (req, res, next) => {
 
   function uploadImage(filePath){
     var filename = 'img'+lastInsertId+'-'+filePath.split('/').pop();
-
+    var url='https://sipag-fiesta.s3.amazonaws.com/technology/' + filename;
     fileUploader.uploadFile('technology/'+filename, filePath);
 
-    var params = {Bucket: 'sipag-fiesta', Key: 'technology/'+filename};
+  /*  var params = {Bucket: 'sipag-fiesta', Key: 'technology/'+filename};
     s3.getSignedUrl('getObject', params, function (err, url) {
       if(err) {
         winston.error('Error: ' + err);
@@ -134,6 +134,14 @@ exports.post_image = (req, res, next) => {
         )
         .end(); 
     });
+  */
+    mysql.use('slave')
+      .query(
+          'UPDATE IMAGE SET image=? WHERE image_id=?',
+          [url, lastInsertId],
+          send_updated_row
+        )
+      .end();
   }
 
   function send_updated_row(err, result, args, last_query){
@@ -174,10 +182,11 @@ exports.put_image = (req, res, next) => {
 
   function uploadImage(filePath){
     var filename = 'img'+req.params.id+'-'+filePath.split('/').pop();
+    var url='https://sipag-fiesta.s3.amazonaws.com/technology/' + filename;
 
     fileUploader.uploadFile('technology/'+filename, filePath);
 
-    var params = {Bucket: 'sipag-fiesta', Key: 'technology/'+filename};
+    /*var params = {Bucket: 'sipag-fiesta', Key: 'technology/'+filename};
     s3.getSignedUrl('getObject', params, function (err, url) {
       if(err) {
         winston.error('Error: ' + err);
@@ -190,7 +199,15 @@ exports.put_image = (req, res, next) => {
           send_response
         )
         .end(); 
-    });
+    });*/
+
+     mysql.use('slave')
+      .query(
+        'UPDATE IMAGE SET image=? WHERE image_id=?', 
+        [url, req.params.id],
+        send_response
+      )
+      .end(); 
   }
 
   function send_response (err, result, args, last_query) {

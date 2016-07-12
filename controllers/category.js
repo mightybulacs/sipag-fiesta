@@ -94,10 +94,17 @@ exports.post_category = (req, res, next) => {
 
   function uploadImage(filePath){
     var filename = 'cat'+req.body.name+'-'+filePath.split('/').pop();
-
+    var url='https://sipag-fiesta.s3.amazonaws.com/category/' + filename;
     fileUploader.uploadFile('category/'+filename, filePath);
 
-    var params = {Bucket: 'sipag-fiesta', Key: 'category/'+filename};
+    mysql.use('slave')
+      .query(
+        'UPDATE CATEGORY SET thumbnail=? WHERE name=?', 
+        [url, req.body.name],
+        send_updated_row
+      )
+      .end();
+    /*var params = {Bucket: 'sipag-fiesta', Key: 'category/'+filename};
     s3.getSignedUrl('getObject', params, function (err, url) {
       if(err) {
         winston.error('Error: ' + err);
@@ -110,7 +117,7 @@ exports.post_category = (req, res, next) => {
           send_updated_row
         )
         .end(); 
-    });
+    });*/
   }
 
   function send_updated_row(err, result, args, last_query){
@@ -162,10 +169,18 @@ exports.put_category = (req, res, next) => {
 
   function uploadImage(filePath){
     var filename = 'cat'+req.body.name+'-'+filePath.split('/').pop();
-
+    var url='https://sipag-fiesta.s3.amazonaws.com/category/' + filename;
     fileUploader.uploadFile('category/'+filename, filePath);
 
-    var params = {Bucket: 'sipag-fiesta', Key: 'category/'+filename};
+    mysql.use('slave')
+      .query(
+        'UPDATE CATEGORY SET thumbnail=?, name=? WHERE name=?', 
+        [url, req.body.name, req.params.name],
+        send_response
+      )
+      .end(); 
+
+    /*var params = {Bucket: 'sipag-fiesta', Key: 'category/'+filename};
     s3.getSignedUrl('getObject', params, function (err, url) {
       if(err) {
         winston.error('Error: ' + err);
@@ -178,7 +193,7 @@ exports.put_category = (req, res, next) => {
           send_response
         )
         .end(); 
-    });
+    });*/
 
   }
 

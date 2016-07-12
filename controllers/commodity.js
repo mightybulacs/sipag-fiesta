@@ -147,10 +147,17 @@ exports.post_commodity = (req, res, next) => {
 
   function uploadImage(filePath){
     var filename = 'com'+lastInsertId+'-'+filePath.split('/').pop();
-
+    var url='https://sipag-fiesta.s3.amazonaws.com/commodity/' + filename;
     fileUploader.uploadFile('commodity/'+filename, filePath);
 
-    var params = {Bucket: 'sipag-fiesta', Key: 'commodity/'+filename};
+    mysql.use('slave')
+      .query(
+        'UPDATE COMMODITY SET thumbnail=? WHERE commodity_id=?', 
+        [url, lastInsertId],
+        send_updated_row
+      )
+      .end();
+    /*var params = {Bucket: 'sipag-fiesta', Key: 'commodity/'+filename};
     s3.getSignedUrl('getObject', params, function (err, url) {
       if(err) {
         winston.error('Error: ' + err);
@@ -163,7 +170,7 @@ exports.post_commodity = (req, res, next) => {
           send_updated_row
         )
         .end(); 
-    });
+    });*/
   }
 
   function send_updated_row(err, result, args, last_query){
@@ -216,10 +223,17 @@ exports.put_commodity = (req, res, next) => {
 
   function uploadImage(filePath){
     var filename = 'com'+req.params.id+'-'+filePath.split('/').pop();
-
+    var url='https://sipag-fiesta.s3.amazonaws.com/commodity/' + filename;
     fileUploader.uploadFile('commodity/'+filename, filePath);
 
-    var params = {Bucket: 'sipag-fiesta', Key: 'commodity/'+filename};
+    mysql.use('slave')
+      .query(
+        'UPDATE COMMODITY SET thumbnail=?, name=?, category=? WHERE commodity_id=?', 
+        [url, req.body.name, req.body.category, req.params.id],
+        send_response
+      )
+      .end(); 
+    /*var params = {Bucket: 'sipag-fiesta', Key: 'commodity/'+filename};
     s3.getSignedUrl('getObject', params, function (err, url) {
       if(err) {
         winston.error('Error: ' + err);
@@ -232,7 +246,7 @@ exports.put_commodity = (req, res, next) => {
           send_response
         )
         .end(); 
-    });
+    });*/
   }
 
   function send_response (err, result, args, last_query) {
