@@ -37,6 +37,13 @@ module.exports = (router) => {
   router.put ('/commodities/:id',                               __.commodity.put_commodity);
   router.del ('/commodities/:id',                               __.commodity.delete_commodity);
 
+  //IMAGE
+  router.get ('/technologies/:id/images',                       __.image.get_image);
+  router.get ('/images/:id',                                    __.image.get_oneImage);
+  router.post('/technologies/:id/images',                       __.image.post_image);
+  router.put ('/images/:id',                                    __.image.put_image);
+  router.del ('/images/:id',                                    __.image.delete_image);
+
   //LOCATION
   router.get ('/technologies/:id/locations',                    __.location.get_location);
   router.post('/technologies/:id/locations',                    __.location.post_location);
