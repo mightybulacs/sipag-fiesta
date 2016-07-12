@@ -61,7 +61,7 @@ exports.post_location = (req, res, next) => {
 
     mysql.use('slave')
       .query(
-        'INSERT INTO location (technology_id, location) VALUES (?, ?)', 
+        'INSERT INTO LOCATION (technology_id, location) VALUES (?, ?)', 
         [req.params.id, req.body.location],
         send_response
       )
@@ -94,7 +94,7 @@ exports.put_location = (req, res, next) => {
 
     mysql.use('slave')
       .query(
-        'UPDATE location SET location=? WHERE location_id=?', 
+        'UPDATE LOCATION SET location=? WHERE location_id=?', 
         [req.body.location, req.params.id],
         send_response
       )
