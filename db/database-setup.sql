@@ -153,14 +153,14 @@ CREATE TABLE IF NOT EXISTS PARTNER (
   IMAGES
     image_id
     technology_id
-    filename
+    image
 */
 
 CREATE TABLE IF NOT EXISTS IMAGE (
   image_id int(4) NOT NULL AUTO_INCREMENT,
   technology_id int(4) NOT NULL,
-  filename tinytext NOT NULL,
-  PRIMARY KEY (partner_id),
+  image tinytext NOT NULL,
+  PRIMARY KEY (image_id),
   FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
