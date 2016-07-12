@@ -132,7 +132,7 @@ exports.post_commodity = (req, res, next) => {
     }
     
     lastInsertId = result.insertId;
-    if(!req.body.thumbnail){ //no thumbnail to upload
+    if(!req.body.thumbnail) { //no thumbnail to upload
       mysql.use('slave')
         .query(
             'SELECT * FROM COMMODITY WHERE commodity_id=?',
@@ -146,7 +146,7 @@ exports.post_commodity = (req, res, next) => {
   }
 
   function uploadImage(filePath){
-    var filename = filePath.split('/').pop();
+    var filename = 'com'+lastInsertId+'-'+filePath.split('/').pop();
 
     fileUploader.uploadFile('commodity/'+filename, filePath);
 
@@ -163,11 +163,11 @@ exports.post_commodity = (req, res, next) => {
   }
 
   function send_updated_row(err, result, args, last_query){
-    if(err){
+    if(err) {
       winston.error('Error in putting commodity', last_query);
       return next(err);
     }
-    else if(result.affectedRows === 0){
+    else if(result.affectedRows === 0) {
       res.status(404)
           .send({message:'Commodity '+ req.params.name +' not found!'});
     }
@@ -197,7 +197,7 @@ exports.put_commodity = (req, res, next) => {
     if (!req.body.category)
       return res.status(451).send({'error': true, 'message': 'Missing parameter: category'});
 
-    if(!req.body.thumbnail){ //no thumbnail to upload
+    if(!req.body.thumbnail) { //no thumbnail to upload
       mysql.use('slave')
         .query(
           'UPDATE COMMODITY SET name=?, category=? WHERE commodity_id=?', 
@@ -206,12 +206,12 @@ exports.put_commodity = (req, res, next) => {
         )
         .end();
     }
-    else
+    else 
       uploadImage(req.body.thumbnail);
   }
 
   function uploadImage(filePath){
-    var filename = filePath.split('/').pop();
+    var filename = 'com'+req.params.id+'-'+filePath.split('/').pop();
 
     fileUploader.uploadFile('commodity/'+filename, filePath);
 
@@ -219,9 +219,9 @@ exports.put_commodity = (req, res, next) => {
     s3.getSignedUrl('getObject', params, function (err, url) {
       mysql.use('slave')
         .query(
-          'UPDATE COMMODITY SET thumbnail=? WHERE commodity_id=?', 
-          [url, req.params.id],
-          send_edited_row
+          'UPDATE COMMODITY SET thumbnail=?, name=?, category=? WHERE commodity_id=?', 
+          [url, req.body.name, req.body.category, req.params.id],
+          send_response
         )
         .end(); 
     });
