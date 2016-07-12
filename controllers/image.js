@@ -122,6 +122,10 @@ exports.post_image = (req, res, next) => {
 
     var params = {Bucket: 'sipag-fiesta', Key: 'technology/'+filename};
     s3.getSignedUrl('getObject', params, function (err, url) {
+      if(err) {
+        winston.error('Error: ' + err);
+        return next(err);
+      }
       mysql.use('slave')
         .query(
           'UPDATE IMAGE SET image=? WHERE image_id=?', 
@@ -175,6 +179,10 @@ exports.put_image = (req, res, next) => {
 
     var params = {Bucket: 'sipag-fiesta', Key: 'technology/'+filename};
     s3.getSignedUrl('getObject', params, function (err, url) {
+      if(err) {
+        winston.error('Error: ' + err);
+        return next(err);
+      }
       mysql.use('slave')
         .query(
           'UPDATE IMAGE SET image=? WHERE image_id=?', 

@@ -152,6 +152,10 @@ exports.post_commodity = (req, res, next) => {
 
     var params = {Bucket: 'sipag-fiesta', Key: 'commodity/'+filename};
     s3.getSignedUrl('getObject', params, function (err, url) {
+      if(err) {
+        winston.error('Error: ' + err);
+        return next(err);
+      }
       mysql.use('slave')
         .query(
           'UPDATE COMMODITY SET thumbnail=? WHERE commodity_id=?', 
@@ -217,6 +221,10 @@ exports.put_commodity = (req, res, next) => {
 
     var params = {Bucket: 'sipag-fiesta', Key: 'commodity/'+filename};
     s3.getSignedUrl('getObject', params, function (err, url) {
+      if(err) {
+        winston.error('Error: ' + err);
+        return next(err);
+      }
       mysql.use('slave')
         .query(
           'UPDATE COMMODITY SET thumbnail=?, name=?, category=? WHERE commodity_id=?', 

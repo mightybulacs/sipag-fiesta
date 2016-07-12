@@ -16,8 +16,12 @@ exports.uploadFile = function (remoteFilename, fileName){
     Key: remoteFilename,
     Body: fileBuffer,
     ContentType: metaData
-  }, function(error, response) {
-    console.log('uploaded file[' + fileName + '] to [' + remoteFilename + '] \nas [' + metaData + ']');
+  }, function(err, response) {
+    if(err) {
+      console.log('Error uploading data: '+ err);
+    }
+    else
+      console.log('Uploaded file[' + fileName + '] to [' + remoteFilename + '] \nas [' + metaData + ']');
   });
 }
 

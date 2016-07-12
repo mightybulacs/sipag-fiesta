@@ -99,6 +99,10 @@ exports.post_category = (req, res, next) => {
 
     var params = {Bucket: 'sipag-fiesta', Key: 'category/'+filename};
     s3.getSignedUrl('getObject', params, function (err, url) {
+      if(err) {
+        winston.error('Error: ' + err);
+        return next(err);
+      }
       mysql.use('slave')
         .query(
           'UPDATE CATEGORY SET thumbnail=? WHERE name=?', 
@@ -163,6 +167,10 @@ exports.put_category = (req, res, next) => {
 
     var params = {Bucket: 'sipag-fiesta', Key: 'category/'+filename};
     s3.getSignedUrl('getObject', params, function (err, url) {
+      if(err) {
+        winston.error('Error: ' + err);
+        return next(err);
+      }
       mysql.use('slave')
         .query(
           'UPDATE CATEGORY SET thumbnail=?, name=? WHERE name=?', 
