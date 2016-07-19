@@ -24,15 +24,28 @@ module.exports = (router) => {
   router.put ('/benefits/:id',                                  __.benefit.put_benefit);
   router.del ('/benefits/:id',                                  __.benefit.delete_benefit);
 
+  //BLOG
+  router.get ('/commodities/:id/blogs',                         __.blog.get_blog);
+  router.get ('/blogs/:id',                                     __.blog.get_oneBlog);
+  router.post('/commodities/:id/blogs',                         __.blog.post_blog);
+  router.put ('/blogs/:id',                                     __.blog.put_blog);
+  router.del ('/blogs/:id',                                     __.blog.delete_blog);
+
   //CATEGORY
   router.get ('/categories',                                    __.category.get_category);
   router.post('/categories',                                    __.category.post_category);
   router.put ('/categories/:name',                              __.category.put_category);
   router.del ('/categories/:name',                              __.category.delete_category);
 
+  //COMMENT
+  router.get ('/technologies/:id/comments',                     __.comment.get_comment);
+  router.post('/technologies/:id/comments',                     __.comment.post_comment);
+  router.put ('/comments/:id',                                  __.comment.put_comment);
+  router.del ('/comments/:id',                                  __.comment.delete_comment);
+
   //COMMODITY
   router.get ('/commodities',                                   __.commodity.get_commodity);
-  router.get ('/:category/commodities',                         __.commodity.get_commodity_category);
+  router.get ('/:category/commodities',                         __.commodity.get_commodityByCategory);
   router.post('/commodities',                                   __.commodity.post_commodity);
   router.put ('/commodities/:id',                               __.commodity.put_commodity);
   router.del ('/commodities/:id',                               __.commodity.delete_commodity);
@@ -65,8 +78,8 @@ module.exports = (router) => {
   //TECHNOLOGY
   router.get ('/technologies/:id',                              __.technology.get_oneTechnology);
   router.get ('/technologies/',                                 __.technology.get_technology);
-  router.get ('/category/:category/technologies',               __.technology.get_category_technology);
-  router.get ('/commodity/:commodity/technologies',             __.technology.get_commodity_technology);
+  router.get ('/category/:category/technologies',               __.technology.get_technologyByCategory);
+  router.get ('/commodity/:commodity/technologies',             __.technology.get_technologyByCommodity);
   router.post('/technologies',                                  __.technology.post_technology);
   router.put ('/technologies/:id',                              __.technology.put_technology);
   router.del ('/technologies/:id',                              __.technology.delete_technology);     
