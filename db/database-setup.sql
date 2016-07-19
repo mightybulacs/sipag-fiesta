@@ -27,6 +27,7 @@ GRANT ALL PRIVILEGES ON sipagdb.* TO 'sipag'@'localhost';
     thumbnail
 */
 
+DROP TABLE IF EXISTS CATEGORY;
 CREATE TABLE IF NOT EXISTS CATEGORY (
   name varchar(64) NOT NULL,
   thumbnail tinytext,
@@ -40,6 +41,7 @@ CREATE TABLE IF NOT EXISTS CATEGORY (
     technologies (ref:TECHNOLOGY)
 */
 
+DROP TABLE IF EXISTS COMMODITY;
 CREATE TABLE IF NOT EXISTS COMMODITY (
   commodity_id int(4) NOT NULL AUTO_INCREMENT,
   name varchar(64) NOT NULL,
@@ -62,6 +64,7 @@ CREATE TABLE IF NOT EXISTS COMMODITY (
 
 */
 
+DROP TABLE IF EXISTS TECHNOLOGY;
 CREATE TABLE IF NOT EXISTS TECHNOLOGY (
   technology_id int(4) NOT NULL AUTO_INCREMENT,
   title varchar(255) NOT NULL UNIQUE,
@@ -81,6 +84,7 @@ CREATE TABLE IF NOT EXISTS TECHNOLOGY (
     objective
 */
 
+DROP TABLE IF EXISTS OBJECTIVE;
 CREATE TABLE IF NOT EXISTS OBJECTIVE (
   objective_id int(4) NOT NULL AUTO_INCREMENT,
   technology_id int(4) NOT NULL,
@@ -96,6 +100,7 @@ CREATE TABLE IF NOT EXISTS OBJECTIVE (
     benefit
 */
 
+DROP TABLE IF EXISTS BENEFIT;
 CREATE TABLE IF NOT EXISTS BENEFIT (
   benefit_id int(4) NOT NULL AUTO_INCREMENT,
   technology_id int(4) NOT NULL,
@@ -111,6 +116,7 @@ CREATE TABLE IF NOT EXISTS BENEFIT (
     beneficiary
 */
 
+DROP TABLE IF EXISTS BENEFICIARY;
 CREATE TABLE IF NOT EXISTS BENEFICIARY (
   beneficiary_id int(4) NOT NULL AUTO_INCREMENT,
   technology_id int(4) NOT NULL,
@@ -126,6 +132,7 @@ CREATE TABLE IF NOT EXISTS BENEFICIARY (
     location
 */
 
+DROP TABLE IF EXISTS LOCATION;
 CREATE TABLE IF NOT EXISTS LOCATION (
   location_id int(4) NOT NULL AUTO_INCREMENT,
   technology_id int(4) NOT NULL,
@@ -141,6 +148,7 @@ CREATE TABLE IF NOT EXISTS LOCATION (
     partner
 */
 
+DROP TABLE IF EXISTS PARTNER;
 CREATE TABLE IF NOT EXISTS PARTNER (
   partner_id int(4) NOT NULL AUTO_INCREMENT,
   technology_id int(4) NOT NULL,
@@ -156,6 +164,7 @@ CREATE TABLE IF NOT EXISTS PARTNER (
     image
 */
 
+DROP TABLE IF EXISTS IMAGE;
 CREATE TABLE IF NOT EXISTS IMAGE (
   image_id int(4) NOT NULL AUTO_INCREMENT,
   technology_id int(4) NOT NULL,
@@ -164,6 +173,44 @@ CREATE TABLE IF NOT EXISTS IMAGE (
   FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+/*
+  COMMENTS
+    comment_id
+    technology_id
+    comment
+*/
+
+DROP TABLE IF EXISTS COMMENT;
+CREATE TABLE IF NOT EXISTS COMMENT (
+  comment_id int(4) NOT NULL AUTO_INCREMENT,
+  technology_id int(4) NOT NULL,
+  comment tinytext NOT NULL,
+  author varchar(128) NOT NULL,
+  datetime_created datetime NOT NULL,
+  PRIMARY KEY (comment_id),
+  FOREIGN KEY (technology_id) REFERENCES TECHNOLOGY(technology_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+/*
+  BLOGS
+    blog_id
+    commodity_id
+    title
+    blog
+    author
+    datetime_created
+*/
+
+CREATE TABLE IF NOT EXISTS BLOG (
+  blog_id int(4) NOT NULL AUTO_INCREMENT,
+  commodity_id int(4) NOT NULL,
+  title varchar(128) NOT NULL,
+  blog text NOT NULL,
+  author varchar(128) NOT NULL,
+  datetime_created datetime NOT NULL,
+  PRIMARY KEY (blog_id),
+  FOREIGN KEY (commodity_id) REFERENCES COMMODITY(commodity_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 /*Populate tables*/
 /*Insert initial categories*/
@@ -174,6 +221,31 @@ INSERT INTO CATEGORY ( name )
     ( 'Livestock' ),
     ( 'Forest and Environment' );
 
+
+INSERT INTO COMMENT (technology_id, comment, author, datetime_created)
+  VALUES
+    ( '1', 'this is cool', 'anonymous', sysdate() ),
+    ( '1', 'sipag ni Juan is the best', 'anonymous', sysdate() ),
+    ( '1', 'i strongly recommend', 'anonymous', sysdate() ),
+    ( '20', 'this is cool', 'anonymous', sysdate() ),
+    ( '20', 'sipag ni Juan is the best', 'anonymous', sysdate() ),
+    ( '20', 'i strongly recommend', 'anonymous', sysdate() ),
+    ( '32', 'this is cool', 'anonymous', sysdate() ),
+    ( '32', 'sipag ni Juan is the best', 'anonymous', sysdate() ),
+    ( '32', 'i strongly recommend', 'anonymous', sysdate() );
+
+INSERT INTO BLOG (commodity_id, title, blog, author, datetime_created)
+  VALUES
+    ( '1', 'Blog post', 'this is a blog post, yadah yadah', 'anonymous', sysdate() ),
+    ( '1', 'Blog post', 'this is another blog post, yadah yadah', 'anonymous', sysdate() ),
+    ( '1', 'Blog post', 'yehey another blog post, yadah yadah', 'anonymous', sysdate() ),
+    ( '5', 'Blog post', 'this is a blog post, yadah yadah', 'anonymous', sysdate() ),
+    ( '5', 'Blog post', 'this is another blog post, yadah yadah', 'anonymous', sysdate() ),
+    ( '5', 'Blog post', 'yehey another blog post, yadah yadah', 'anonymous', sysdate() ),
+    ( '10', 'Blog post', 'this is a blog post, yadah yadah', 'anonymous', sysdate() ),
+    ( '10', 'Blog post', 'this is another blog post, yadah yadah', 'anonymous', sysdate() ),
+    ( '10 ', 'Blog post', 'yehey another blog post, yadah yadah', 'anonymous', sysdate() );
+    
 /*
 source sipag-fiesta-AQUATIC.sql;  
 source sipag-fiesta-CROPS.sql;
