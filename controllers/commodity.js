@@ -58,7 +58,7 @@ exports.get_commodity = (req, res, next) => {
 }
 
 // /:category/commodities or /:category/commodities?page=?&size=?
-exports.get_commodity_category = (req, res, next) => {
+exports.get_commodityByCategory = (req, res, next) => {
 
   function start () {
     let page = filterInt(req.query.page);

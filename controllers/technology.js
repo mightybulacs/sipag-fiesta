@@ -82,7 +82,7 @@ exports.get_technology = (req, res, next) => {
 }
 
 // /category/:category/technologies or /category/:category/technologies?page=?&size=?
-exports.get_category_technology = (req, res, next) => {
+exports.get_technologyByCategory = (req, res, next) => {
 
   function start () {
     let page = filterInt(req.query.page);
@@ -131,7 +131,7 @@ exports.get_category_technology = (req, res, next) => {
 }
 
 // /commodity/:commodity/technologies or /commodity/:commodity/technologies?page=?&size=?
-exports.get_commodity_technology = (req, res, next) => {
+exports.get_technologyByCommodity = (req, res, next) => {
 
   function start () {
     let page = filterInt(req.query.page);
